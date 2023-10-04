@@ -1,4 +1,4 @@
-import React, { SVGProps } from 'react'
+import  { SVGProps } from 'react'
 
 export function MaterialSymbolsNewsmodeOutlineRounded(props: SVGProps<SVGSVGElement>) {
   return (
