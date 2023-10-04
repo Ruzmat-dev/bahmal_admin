@@ -1,0 +1,16 @@
+.topbar_wrapper {
+    width: 100%;
+    margin: auto 0;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: center;
+    border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.img {
+    width: 200px;
+    height: 50px;
+    margin: auto;
+}

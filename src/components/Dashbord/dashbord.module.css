@@ -1,0 +1,74 @@
+:root {
+    --color: #6EB648
+}
+
+/* Dashbord Styles */
+
+.dashbord {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.dashbord_card {
+    width: 32%;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashbord_title {
+    font-size: 35px;
+    font-weight: bold;
+    line-height: 1.2;
+    color: var(--color);
+}
+
+.dashbord_number {
+    font-size: 35px;
+    font-weight: bold;
+    line-height: 1.2;
+    color: #0000008f;
+}
+
+.dashbord_btn {
+    height: 45px;
+    background-color: var(--color);
+    font-size: 22px;
+    font-weight: 400;
+}
+
+.dashbord_btn:hover {
+    color: var(--color);
+    border: 1px solid var(--color);
+    background-color: #fff;
+}
+
+@media(max-width:1200px) {
+    .dashbord_card {
+        width: 48%;
+    }
+}
+
+@media(max-width:900px) {
+    .dashbord {
+        justify-content: center;
+    }
+    .dashbord_card {
+        width: 80%;
+    }
+}
+@media(max-width:700px) {
+    .dashbord_title {
+        font-size: 25px;
+    }
+
+    .dashbord_btn {
+        height: 40px;
+        font-size: 16px;
+    }
+}

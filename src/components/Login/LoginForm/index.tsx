@@ -38,8 +38,18 @@ export default function LoginForm() {
       setIsSubmitting(false);
       window.location.reload()
     } catch (error) {
-      toast.error('Uzir hatoliq yuz berdi!');
       const axiosError = error as AxiosError;
+
+      const myError = axiosError.request?.status ?? 0;
+      const errorNumber = Math.floor(myError / 100);
+
+      if (errorNumber === 4) {
+        toast.error('Xato malumot kiritildi!');
+      } else if (errorNumber === 5) {
+        toast.error('Uzir hatoliq yuz berdi!');
+      } else {
+        toast.error('Internet aloqasi yo`q!');
+      }
 
       type ResponseData = {
         username?: string[];
@@ -63,17 +73,17 @@ export default function LoginForm() {
 
   return (
     <Container size={420} my={120} >
-      <Title ta="center"   c="#6EB648">
-        Bahmal  
+      <Title ta="center" c="#6EB648">
+        Bahmal
       </Title>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput label="Username" placeholder="your username" required ref={usernameRef} onChange={(e) => setUsername(e.target.value)}  />
+        <TextInput label="Username" placeholder="your username" required ref={usernameRef} onChange={(e) => setUsername(e.target.value)} />
         <PasswordInput label="Password" placeholder="Your password" required ref={passwordRef} mt="md" onChange={(e) => setPassword(e.target.value)} />
         <Group justify="space-between" mt="lg">
         </Group>
         <Button onClick={handleSubmit} fullWidth mt="xl" disabled={isSubmitting} color='#6EB648'>
-          {isSubmitting ? <Loader /> : 'Sign in'}
+          {isSubmitting ? <Loader color='#6EB648'/> : 'Sign in'}
         </Button>
       </Paper>
       <Toaster
