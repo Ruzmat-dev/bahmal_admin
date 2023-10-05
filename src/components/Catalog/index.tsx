@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Table,
   ScrollArea,
@@ -13,6 +13,10 @@ import classes from './TableSort.module.css';
 import MaterialSymbolsAddCircleOutlineRounded from '../icons/MaterialSymbolsAddCircleOutlineRounded';
 import MaterialSymbolsEditOutlineRounded from '../icons/MaterialSymbolsEditOutlineRounded';
 import MaterialSymbolsDeleteOutlineRounded from '../icons/MaterialSymbolsDeleteOutlineRounded';
+import { getCategories } from '../../api/data';
+import { TCategory } from '../../../types/data';
+import MaterialSymbolsVisibilityOutlineRounded from '../icons/MaterialSymbolsVisibilityOutlineRounded';
+import { Link } from 'react-router-dom';
 
 interface RowData {
   name: string;
@@ -81,11 +85,25 @@ const data = [
   },
 ];
 
-export function TableSort() {
+// const  getData = async () => {
+//  const cats = await getCategories()
+
+//   return  cats?.data 
+// }
+
+function shortenText(text: string, maxLength: number) {
+	if (text.length <= maxLength) {
+		return text;
+	}
+	return text.substring(0, maxLength - 3) + '...';
+}
+
+export   function TableSort() {
   const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  const [category, setCategory] = useState<TCategory[] | undefined>([]);
 
   const setSorting = (field: keyof RowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -100,17 +118,46 @@ export function TableSort() {
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
   };
 
-  const rows = sortedData.map((row) => (
-    <Table.Tr key={row.name}>
-      <Table.Td>{row.name}</Table.Td>
-      <Table.Td>{row.email}</Table.Td>
+
+  const fetchData = async () => {
+    try {
+      const res = await getCategories()
+      setCategory(res?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  // console.log(category);
+  
+  const rows =category && category.map((row) => (
+    row.parent == null &&
+    <Table.Tr key={row.id}>
+      <Table.Td>{row.id}</Table.Td>
+      <Table.Td>{shortenText(row.title , 24)} </Table.Td>
       <Table.Td className={classes.catalog_iconWrapper}>
-        <MaterialSymbolsAddCircleOutlineRounded fontSize={22} color='#6EB648' cursor="pointer"/>
-        <MaterialSymbolsEditOutlineRounded fontSize={22} color='gold' cursor="pointer"/>
-        <MaterialSymbolsDeleteOutlineRounded fontSize={22} color='red' cursor="pointer"/>
+      <Link to={`/categories/see/${row.id}`}>
+        <MaterialSymbolsVisibilityOutlineRounded fontSize={22} color='#A9A9A9' cursor="pointer" />
+      </Link>
+      </Table.Td>
+      <Table.Td>
+      <Link to={`/categories/add/${row.id}`}>
+        <MaterialSymbolsAddCircleOutlineRounded fontSize={22} color='#6EB648' cursor="pointer" />
+      </Link>
+      </Table.Td>
+      {/* <Table.Td>
+        <MaterialSymbolsEditOutlineRounded fontSize={22} color='gold' cursor="pointer" />
+      </Table.Td> */}
+      <Table.Td>
+        <MaterialSymbolsDeleteOutlineRounded fontSize={22} color='red' cursor="pointer" />
       </Table.Td>
     </Table.Tr>
   ));
+
+
 
   return (
     <div className={classes.catalog}>
@@ -144,12 +191,28 @@ export function TableSort() {
                 reversed={reverseSortDirection}
                 onSort={() => setSorting('company')}
               >
-                Actions
+                
+                  Korish
+                
+              </Th>
+              <Th
+                sorted={sortBy === 'company'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('company')}
+              >
+                Qoshish
+              </Th>
+              <Th
+                sorted={sortBy === 'company'}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting('company')}
+              >
+                Ochirish
               </Th>
             </Table.Tr>
           </Table.Tbody>
           <Table.Tbody>
-            {rows.length > 0 ? (
+            {rows && rows.length > 0 ? (
               rows
             ) : (
               <Table.Tr>

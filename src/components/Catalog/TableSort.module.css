@@ -21,7 +21,15 @@
   padding: 50px;
 }
 
-.catalog_iconWrapper{
-  display: flex;
-  gap: 15px;
+.catalog_Wrapper{
+  /* display: flex;
+  gap: 15px; */
+  /* width: 100% !important;
+  margin: auto !important; */
+  border: 1px solid red;
+  align-items: center;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* padding-left: px; */
+  /* width: 10px; */
 }
