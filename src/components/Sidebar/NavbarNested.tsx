@@ -11,7 +11,7 @@ import MaterialSymbolsTeamDashboardOutline from '../icons/MaterialSymbolsTeamDas
 
 const mockdata = [
   { label: 'Dashbord', icon: MaterialSymbolsTeamDashboardOutline , link: "/dashbord" },
-  { label: 'Categoryalar', icon: MaterialSymbolsCategoryOutlineRounded , link: "/catalog"},
+  { label: 'Categoryalar', icon: MaterialSymbolsCategoryOutlineRounded , link: "/categories"},
   {
     label: 'Galereya',
     icon: MaterialSymbolsGalleryThumbnailOutlineRounded,

@@ -11,7 +11,7 @@ import {
 import { IconSearch } from '@tabler/icons-react';
 import classes from './TableSort.module.css';
 import MaterialSymbolsAddCircleOutlineRounded from '../icons/MaterialSymbolsAddCircleOutlineRounded';
-import MaterialSymbolsEditOutlineRounded from '../icons/MaterialSymbolsEditOutlineRounded';
+// import MaterialSymbolsEditOutlineRounded from '../icons/MaterialSymbolsEditOutlineRounded';
 import MaterialSymbolsDeleteOutlineRounded from '../icons/MaterialSymbolsDeleteOutlineRounded';
 import { getCategories } from '../../api/data';
 import { TCategory } from '../../../types/data';
@@ -26,15 +26,12 @@ interface RowData {
 
 interface ThProps {
   children: React.ReactNode;
-  reversed: boolean;
-  sorted: boolean;
-  onSort(): void;
 }
 
-function Th({ children, onSort }: ThProps) {
+function Th({ children }: ThProps) {
   return (
     <Table.Th className={classes.th}>
-      <UnstyledButton onClick={onSort} className={classes.control}>
+      <UnstyledButton  className={classes.control}>
         <Text fw={500} fz="sm">
           {children}
         </Text>
@@ -43,34 +40,8 @@ function Th({ children, onSort }: ThProps) {
   );
 }
 
-function filterData(data: RowData[], search: string) {
-  const query = search.toLowerCase().trim();
-  return data.filter((item) =>
-    keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
-  );
-}
 
-function sortData(
-  data: RowData[],
-  payload: { sortBy: keyof RowData | null; reversed: boolean; search: string }
-) {
-  const { sortBy } = payload;
 
-  if (!sortBy) {
-    return filterData(data, payload.search);
-  }
-
-  return filterData(
-    [...data].sort((a, b) => {
-      if (payload.reversed) {
-        return b[sortBy].localeCompare(a[sortBy]);
-      }
-
-      return a[sortBy].localeCompare(b[sortBy]);
-    }),
-    payload.search
-  );
-}
 
 const data = [
   {
@@ -105,18 +76,7 @@ export   function TableSort() {
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [category, setCategory] = useState<TCategory[] | undefined>([]);
 
-  const setSorting = (field: keyof RowData) => {
-    const reversed = field === sortBy ? !reverseSortDirection : false;
-    setReverseSortDirection(reversed);
-    setSortBy(field);
-    setSortedData(sortData(data, { sortBy: field, reversed, search }));
-  };
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    setSearch(value);
-    setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }));
-  };
 
 
   const fetchData = async () => {
@@ -167,45 +127,45 @@ export   function TableSort() {
           mb="md"
           leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
           value={search}
-          onChange={handleSearchChange}
+          // onChange={handleSearchChange}
         />
         <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed">
           <Table.Tbody>
             <Table.Tr>
               <Th
-                sorted={sortBy === 'name'}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting('name')}
+                // sorted={sortBy === 'name'}
+                // reversed={reverseSortDirection}
+                // onSort={() => setSorting('name')}
               >
                 Id
               </Th>
               <Th
-                sorted={sortBy === 'email'}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting('email')}
+                // sorted={sortBy === 'email'}
+                // reversed={reverseSortDirection}
+                // onSort={() => setSorting('email')}
               >
                 Title
               </Th>
               <Th
-                sorted={sortBy === 'company'}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting('company')}
+                // sorted={sortBy === 'company'}
+                // reversed={reverseSortDirection}
+                // onSort={() => setSorting('company')}
               >
                 
                   Korish
                 
               </Th>
               <Th
-                sorted={sortBy === 'company'}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting('company')}
+                // sorted={sortBy === 'company'}
+                // reversed={reverseSortDirection}
+                // onSort={() => setSorting('company')}
               >
                 Qoshish
               </Th>
               <Th
-                sorted={sortBy === 'company'}
-                reversed={reverseSortDirection}
-                onSort={() => setSorting('company')}
+                // sorted={sortBy === 'company'}
+                // reversed={reverseSortDirection}
+                // onSort={() => setSorting('company')}
               >
                 Ochirish
               </Th>
