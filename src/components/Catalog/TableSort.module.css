@@ -21,15 +21,9 @@
   padding: 50px;
 }
 
-.catalog_Wrapper{
-  /* display: flex;
-  gap: 15px; */
-  /* width: 100% !important;
-  margin: auto !important; */
-  border: 1px solid red;
+.iconNotFount {
+  width: 100px;
+  height: 100px;
   align-items: center;
-  /* display: flex; */
-  /* justify-content: center; */
-  /* padding-left: px; */
-  /* width: 10px; */
+  margin-left: 50%;
 }

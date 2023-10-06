@@ -1,15 +1,16 @@
 import { useForm } from 'react-hook-form';
 import classes from "./add.module.css"
-// import { axiosPrivate } from '../../../api/axiosPrivate';
-import { getCategories } from '../../../api/data';
-import { useEffect, useState } from 'react';
-import { TCategory } from '../../../../types/data';
+import { useState , useEffect } from 'react';
 import { axiosPrivate } from '../../../api/axiosPrivate';
-import { TextInput } from '@mantine/core';
+import { TextInput, Button, Text , Loader} from '@mantine/core';
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
+import { useParams } from 'react-router-dom';
+import { axiosPublic } from '../../../api/axiosPublic';
+import { IdCategory } from '../../../../types/data';
+import toast, { Toaster } from 'react-hot-toast';
+import { AxiosError } from 'axios';
 interface FormData {
-  // "id": number,
   "title": string,
   "title_ru": string,
   "title_en": string,
@@ -18,8 +19,6 @@ interface FormData {
   "description_ru": string,
   "description_en": string,
   "description_uz": string,
-  "image": string,
-  "parent": string
 }
 
 const schema = yup
@@ -32,51 +31,31 @@ const schema = yup
     description_ru: yup.string().required(),
     description_en: yup.string().required(),
     description_uz: yup.string().required(),
-    image: yup.string().required(),
-    parent: yup.string().required(),
   })
   .required()
 
-export default function App() {
+export default function CatalogAdd() {
 
-  const [category, setCategory] = useState<TCategory[]>([]);
-  const [filteredCategory, setFilteredCategory] = useState<TCategory[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewURL, setPreviewURL] = useState<string>('');
-  const [file, setFile] = useState<string>();
+  const [previewURL,] = useState<string>('');
+  const [titleProduct , setTitleProduct] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const { id } = useParams()
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    register('image').onChange(file);
-    // console.log(file);
-    setFile(URL.createObjectURL(e.target.files[0]));
+  const CategoryId = async () => {
+     try {
+        const res = await axiosPublic.get<IdCategory>(`/categories/${id}`);
+        setTitleProduct(res.data.title);
+        
+      } catch (error) {
+        console.log(error);
+      }
     
-  };
-
-  const url = window.location.pathname;
-  const parts = url.split('/');
-  const id = parts[parts.length - 1];
-
-  const idNumber = parseInt(id, 10);
-
-  const fetchData = async () => {
-    try {
-      const res = await getCategories()
-      setCategory(res ? res.data : []);
-    } catch (error) {
-      console.log(error);
-    }
   }
-  useEffect(() => {
-    fetchData()
-  }, [])
 
   useEffect(() => {
-    if (category && idNumber) {
-      const filtered = category.filter((item) => item?.parent?.id === idNumber);
-      setFilteredCategory(filtered);
-    }
-  }, [category, idNumber]);
+    CategoryId()
+  }, [])
 
   const {
     register,
@@ -87,22 +66,54 @@ export default function App() {
   });
 
   const onSubmit = async (data: FormData) => {
-    console.log(JSON.stringify(data.image))
-    // try {
-    //   const response = await axiosPrivate.post('/categories/', data, {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     }
-    //   } );
-    //   console.log(response);
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    setIsSubmitting(true);
+    const new_data = { ...data, image: selectedFile, parent: id }
+
+
+    try {
+
+      const response = await axiosPrivate.post('/categories/', new_data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      toast.success('Movafiqiyatli Qoshildi!')
+      console.log(response);
+      setIsSubmitting(false);
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      
+      const myError = axiosError.request?.status ?? 0;
+      const errorNumber = Math.floor(myError / 100);
+      
+      if (errorNumber === 4) {
+        toast.error('Xato malumot kiritildi!');
+      } else if (errorNumber === 5) {
+        toast.error('Uzir hatoliq yuz berdi!');
+      } else {
+        toast.error('Internet aloqasi yo`q!');
+      }
+      setIsSubmitting(false);
+    }
   }
 
 
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      setSelectedFile(file);
+
+      console.log('Selected file:', file.name);
+    } else {
+      setSelectedFile(null);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.catalogAdd}>
+      <Text fz="28" fw={'bold'}>{titleProduct}</Text>
       <TextInput
         label="Title"
         withAsterisk
@@ -159,28 +170,41 @@ export default function App() {
         {...register("description_en", { required: true, min: 3, maxLength: 60 })}
         error={errors.description_en?.message}
       />
-      <TextInput
+      <div className={classes.wrapperImages}>
+        {/* <TextInput
         type="file" id="avatar"
         error={errors.image?.message}
-        {...register("image", { min: 3 })} accept="image/png, image/jpg" onChange={handleFileChange}
-      />
-      {selectedFile && (
-        <img
-          src={previewURL}
-          alt="Preview"
-          style={{ maxWidth: '100%', maxHeight: '200px' }}
+        {...register("image", { required: true })} 
+      /> */}
+        {/* <Field label="Picture" error={errors.picture}> */}
+        <input
+          accept='image/*'
+          onChange={handleFileChange}
+          type="file"
+          id="picture"
         />
-      )}
-      <select {...register("parent")} >
-        {
-          filteredCategory.map((item) => (
-            <option value={item.id} key={item.id} >{item.title} </option>
-          )
-          )
-        }
-      </select>
+        {/* </Field> */}
+        {selectedFile && (
+          <img
+            src={previewURL}
+            alt="Preview"
+            style={{ maxWidth: '100%', maxHeight: '200px' }}
+          />
+        )}
+      </div>
 
-      <input type="submit" />
+      {/* <input type="submit" /> */}
+      <Button disabled={isSubmitting} type='submit' color='#6EB648'>
+      {isSubmitting ? <Loader color='#6EB648'/> : 'Qoshish'}
+      </Button>
+
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
     </form>
   );
 }
+
+
+
