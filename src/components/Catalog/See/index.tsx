@@ -1,208 +1,164 @@
-import { useForm } from 'react-hook-form';
-import classes from "./see.module.css"
-// import { axiosPrivate } from '../../../api/axiosPrivate';
-import { getCategories } from '../../../api/data';
 import { useEffect, useState } from 'react';
-import { TCategory } from '../../../../types/data';
+import {
+    Table,
+    ScrollArea,
+    UnstyledButton,
+    Text,
+    TextInput,
+    rem,
+    Button
+} from '@mantine/core';
+import { IconSearch } from '@tabler/icons-react';
+import classes from './see.module.css';
+import MaterialSymbolsAddCircleOutlineRounded from '../../icons/MaterialSymbolsAddCircleOutlineRounded';
+import MaterialSymbolsDeleteOutlineRounded from '../../icons/MaterialSymbolsDeleteOutlineRounded';
+import { getCategories } from '../../../api/data';
+import MaterialSymbolsVisibilityOutlineRounded from '../../icons/MaterialSymbolsVisibilityOutlineRounded';
+import { Link, useParams } from 'react-router-dom';
+import { modals } from '@mantine/modals';
 import { axiosPrivate } from '../../../api/axiosPrivate';
-import { TextInput , Button  } from '@mantine/core';
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
-interface FormData {
-  // "id": number,
-  "title": string,
-  "title_ru": string,
-  "title_en": string,
-  "title_uz": string,
-  "description": string,
-  "description_ru": string,
-  "description_en": string,
-  "description_uz": string,
-  "image": string,
-  "parent": string
+import toast, { Toaster } from 'react-hot-toast';
+import {TCategory } from '../../../../types/data';
+import MaterialSymbolsAddRounded from '../../icons/MaterialSymbolsAddRounded';
+interface ThProps {
+    children: React.ReactNode;
 }
 
-const schema = yup
-  .object({
-    title: yup.string().required(),
-    title_ru: yup.string().required(),
-    title_uz: yup.string().required(),
-    title_en: yup.string().required(),
-    description: yup.string().required(),
-    description_ru: yup.string().required(),
-    description_en: yup.string().required(),
-    description_uz: yup.string().required(),
-    image: yup.string().required(),
-    parent: yup.string().required(),
-  })
-  .required()
+function Th({ children }: ThProps) {
+    return (
+        <Table.Th className={classes.th}>
+            <UnstyledButton className={classes.control}>
+                <Text fw={500} fz="sm">
+                    {children}
+                </Text>
+            </UnstyledButton>
+        </Table.Th>
+    );
+}
 
-export default function CatalogSee() {
-
-  const [category, setCategory] = useState<TCategory[]>([]);
-  const [filteredCategory, setFilteredCategory] = useState<TCategory[]>([]);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewURL, setPreviewURL] = useState<string>('');
-  // const [file, setFile] = useState<File | null>(null);
-
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const selectedFile = e.target.files?.[0];
-  //   setFile(selectedFile || null);
-  // };
-
- 
-
-
-  const url = window.location.pathname;
-  const parts = url.split('/');
-  const id = parts[parts.length - 1];
-
-  const idNumber = parseInt(id, 10);
-
-  const fetchData = async () => {
-    try {
-      const res = await getCategories()
-      setCategory(res ? res.data : []);
-    } catch (error) {
-      console.log(error);
+function shortenText(text: string, maxLength: number) {
+    if (text.length <= maxLength) {
+        return text;
     }
-  }
-  useEffect(() => {
-    fetchData()
-  }, [])
+    return text.substring(0, maxLength - 3) + '...';
 
-  useEffect(() => {
-    if (category && idNumber) {
-      const filtered = category.filter((item) => item?.parent?.id === idNumber);
-      setFilteredCategory(filtered);
-    }
-  }, [category, idNumber]);
+}
+export function CatalogSee() {
+    const [search,] = useState('');
+    const [category, setCategory] = useState<TCategory[] | undefined>([]);
+    // const [parent , setParent] = useState<number>(null)
+      const handleDelete = async (id: number) => {
+        try {
+         await axiosPrivate.delete(`/categories/${id}/`)
+         toast.success('Movafiqiyatli!')
+         fetchData()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: yupResolver(schema)
-  });
-
-  const onSubmit = async (data: FormData) => {
-    // if (!file) {
-    //   console.error('No file selected');
-    //   return;
-    // }
-
-    // const formData = new FormData();
-    // formData.append('image', file);
-    // console.log(file);
-    
-    try {
-      const response = await axiosPrivate.post('/categories/', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+        } catch (error) {
+          toast.error('O`chirishda xatolik yuz berdi!');
         }
-      } );
-      console.log(response);
-    } catch (error) {
-      console.error(error);
+      };
+    const { id } = useParams()
+
+    const fetchData = async () => {
+        try {
+            const res = await getCategories()
+            const subs = res ? res.data.filter((item) => item?.parent?.id === Number(id)) : []
+            setCategory(subs)
+            // console.log(subs);
+        } catch (error) {
+            console.log(error);
+        }
     }
-  }
 
 
-  return (
-    <form  onSubmit={handleSubmit(onSubmit)} className={classes.catalogAdd}>
-      <TextInput
-        label="Title"
-        withAsterisk
-        placeholder="Input placeholder"
-        {...register("title", { min: 3, maxLength: 59 })}
-        error={errors.title?.message}
-      />
-      <TextInput
-        label="Title uz"
-        withAsterisk
-        placeholder="Title uz"
-        {...register("title_uz", { required: true, min: 3, maxLength: 60 })}
-        error={errors.title_uz?.message}
-      />
-      <TextInput
-        label="Title ru"
-        withAsterisk
-        placeholder="Title ru"
-        {...register("title_ru", { required: true, min: 3, maxLength: 60 })}
-        error={errors.title_ru?.message}
-      />
-      <TextInput
-        label="Title en"
-        withAsterisk
-        placeholder="Title en"
-        {...register("title_en", { required: true, min: 3, maxLength: 60 })}
-        error={errors.title_ru?.message}
-      />
-      <TextInput
-        label="Description"
-        withAsterisk
-        placeholder="Description"
-        {...register("description", { required: true, min: 3, maxLength: 60 })}
-        error={errors.description?.message}
-      />
-      <TextInput
-        label="Description uz"
-        withAsterisk
-        placeholder="Description uz"
-        {...register("description_uz", { required: true, min: 3, maxLength: 60 })}
-        error={errors.description_uz?.message}
-      />
-      <TextInput
-        label="Description ru"
-        withAsterisk
-        placeholder="Description ru"
-        {...register("description_ru", { required: true, min: 3, maxLength: 60 })}
-        error={errors.description_ru?.message}
-      />
-      <TextInput
-        label="Description en"
-        withAsterisk
-        placeholder="Description en"
-        {...register("description_en", { required: true, min: 3, maxLength: 60 })}
-        error={errors.description_en?.message}
-      />
-      <div className={classes.wrapperImages}>
-      {/* <TextInput
-        type="file" id="avatar"
-        error={errors.image?.message}
-        {...register("image", { required: true })} 
-      /> */}
-       {/* <Field label="Picture" error={errors.picture}> */}
-            <input
-              {...register("image", {
-                required: "Recipe picture is required",
-              })}
-              type="file"
-              id="picture"
+
+
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+      const openDeleteModal = (e: TCategory) => {
+        modals.openConfirmModal({
+          title: e.title,
+          centered: true,
+          children: (
+            <Text size="sm">
+              Siz haqiqatan ham bu mahsulotni ochirmoqchimisiz
+            </Text>
+          ),
+          labels: { confirm: 'xa', cancel: "yuq" },
+          confirmProps: { color: 'red' },
+          onConfirm: () => handleDelete(e.id),
+        })
+      }
+
+    const rows = category && category.map((row) => (
+        <Table.Tr key={row.id}>
+            <Table.Td>{row.id}</Table.Td>
+            <Table.Td>{shortenText(row.title, 24)} </Table.Td>
+            <Table.Td className={classes.catalog_iconWrapper}>
+                <Link to={`/categories/see/${row.id}`}>
+                    <MaterialSymbolsVisibilityOutlineRounded fontSize={22} color='#A9A9A9' cursor="pointer" />
+                </Link>
+            </Table.Td>
+            <Table.Td>
+                <Link to={`/categories/add/${row.id}`}>
+                    <MaterialSymbolsAddCircleOutlineRounded fontSize={22} color='#6EB648' cursor="pointer" />
+                </Link>
+            </Table.Td>
+            <Table.Td>
+                {/* ochir */}
+                <MaterialSymbolsDeleteOutlineRounded fontSize={22} color='red' cursor="pointer" onClick={() => openDeleteModal(row)} />
+            </Table.Td>
+        </Table.Tr>
+    ));
+
+    return (
+        <div className={classes.catalog}>
+            <ScrollArea>
+                <div className={classes.wrppaerInputAndBtn}>
+                    <TextInput
+                        placeholder="Categorya boyicha qidiru"
+                        mb="md"
+                        w={600}
+                        leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
+                        value={search}
+                    />
+                    <Button className={classes.addNewCategory} color='#6EB648'>
+                        <MaterialSymbolsAddRounded fontWeight={700} fontSize={22} />
+                        Yangi Categorya qoshish </Button>
+
+                </div>
+                <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed">
+                    <Table.Tbody>
+                        <Table.Tr>
+                            <Th>Id</Th>
+                            <Th>Title</Th>
+                            <Th>Korish</Th>
+                            <Th>Qoshish</Th>
+                            <Th>Ochirish</Th>
+                        </Table.Tr>
+                    </Table.Tbody>
+                    <Table.Tbody>
+                        {rows && rows.length > 0 ? (
+                            rows
+                        ) : (
+                            <Table.Tr>
+                                <Table.Td>
+                                    <Text fw={500} ta="center">
+                                        <img src="../../../public/no-results.png" alt="" className={classes.iconNotFount} />
+                                    </Text>
+                                </Table.Td>
+                            </Table.Tr>
+                        )}
+                    </Table.Tbody>
+                </Table>
+            </ScrollArea>
+            <Toaster
+                position="top-right"
+                reverseOrder={false}
             />
-          {/* </Field> */}
-      {selectedFile && (
-        <img
-          src={previewURL}
-          alt="Preview"
-          style={{ maxWidth: '100%', maxHeight: '200px' }}
-        />
-      )}
-      </div>
-      <select {...register("parent")} >
-        {
-          filteredCategory.map((item) => (
-            <option value={item.id} key={item.id} >{item.title} </option>
-          )
-          )
-        }
-      </select>
-
-      
-    </form>
-  );
+        </div>
+    );
 }
-
-
-

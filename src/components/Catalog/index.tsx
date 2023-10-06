@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import {
   Table,
   ScrollArea,
@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   rem,
+  Button
 } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 import classes from './TableSort.module.css';
@@ -16,6 +17,9 @@ import { TCategory } from '../../../types/data';
 import MaterialSymbolsVisibilityOutlineRounded from '../icons/MaterialSymbolsVisibilityOutlineRounded';
 import { Link } from 'react-router-dom';
 import { modals } from '@mantine/modals';
+import { axiosPrivate } from '../../api/axiosPrivate';
+import toast, { Toaster } from 'react-hot-toast';
+import MaterialSymbolsAddRounded from '../icons/MaterialSymbolsAddRounded';
 interface ThProps {
   children: React.ReactNode;
 }
@@ -32,7 +36,6 @@ function Th({ children }: ThProps) {
   );
 }
 
-
 function shortenText(text: string, maxLength: number) {
   if (text.length <= maxLength) {
     return text;
@@ -41,9 +44,19 @@ function shortenText(text: string, maxLength: number) {
 }
 
 export function TableSort() {
-  const [search, ] = useState('');
+  const [search,] = useState('');
   const [category, setCategory] = useState<TCategory[] | undefined>([]);
 
+  const handleDelete = async (id: number) => {
+    try {
+     await axiosPrivate.delete(`/categories/${id}/`)
+     toast.success('Movafiqiyatli!')
+     fetchData()
+
+    } catch (error) {
+      toast.error('O`chirishda xatolik yuz berdi!');
+    }
+  };
   const fetchData = async () => {
     try {
       const res = await getCategories()
@@ -52,24 +65,24 @@ export function TableSort() {
       console.log(error);
     }
   }
+
   useEffect(() => {
     fetchData()
-  }, [])
-  
-  const openDeleteModal = () => {
-  modals.openConfirmModal({
-    title: "ochirish",
-    centered: true,
-    children: (
-      <Text size="sm">
-        Siz haqiqatan ham bu mahsulotni ochirmoqchimisiz
-      </Text>
-    ),
-    labels: { confirm: 'Ochirish', cancel: "Ortga" },
-    confirmProps: { color: 'red' },
-    onCancel: () => console.log('Cancel'),
-    onConfirm: () => console.log('Confirmed'),
-  });
+  },[])
+
+  const openDeleteModal = (e: TCategory) => {
+    modals.openConfirmModal({
+      title: e.title,
+      centered: true,
+      children: (
+        <Text size="sm">
+          Siz haqiqatan ham bu mahsulotni ochirmoqchimisiz
+        </Text>
+      ),
+      labels: { confirm: 'xa', cancel: "yuq" },
+      confirmProps: { color: 'red' },
+      onConfirm: () => handleDelete(e.id),
+    })
   }
 
   const rows = category && category.map((row) => (
@@ -88,7 +101,7 @@ export function TableSort() {
         </Link>
       </Table.Td>
       <Table.Td>
-        <MaterialSymbolsDeleteOutlineRounded fontSize={22} color='red' cursor="pointer" onClick={openDeleteModal} />
+        <MaterialSymbolsDeleteOutlineRounded fontSize={22} color='red' cursor="pointer" onClick={() => openDeleteModal(row)} />
       </Table.Td>
     </Table.Tr>
   ));
@@ -96,37 +109,27 @@ export function TableSort() {
   return (
     <div className={classes.catalog}>
       <ScrollArea>
+        <div className={classes.wrppaerInputAndBtn}>
         <TextInput
-          placeholder="Search by any field"
+          placeholder="Categorya boyicha qidiru"
           mb="md"
+          w={600}
           leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
           value={search}
         />
+        <Link to="/newCatalog">
+        <Button className={classes.addNewCategory} color='#6EB648'> <MaterialSymbolsAddRounded fontWeight={700} fontSize={22}/> Yangi Categorya qoshish </Button>
+        </Link>
+      
+        </div>
         <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed">
           <Table.Tbody>
             <Table.Tr>
-              <Th
-              >
-                Id
-              </Th>
-              <Th
-              >
-                Title
-              </Th>
-              <Th
-              >
-
-                Korish
-
-              </Th>
-              <Th
-              >
-                Qoshish
-              </Th>
-              <Th
-              >
-                Ochirish
-              </Th>
+              <Th>Id</Th>
+              <Th>Title</Th>
+              <Th>Korish</Th>
+              <Th>Qoshish</Th>
+              <Th>Ochirish</Th>
             </Table.Tr>
           </Table.Tbody>
           <Table.Tbody>
@@ -144,6 +147,10 @@ export function TableSort() {
           </Table.Tbody>
         </Table>
       </ScrollArea>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
     </div>
   );
 }

@@ -27,3 +27,18 @@
   align-items: center;
   margin-left: 50%;
 }
+
+.wrppaerInputAndBtn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: center;
+}
+
+.addNewCategory {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: center;
+}
