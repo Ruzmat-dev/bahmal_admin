@@ -1,3 +1,4 @@
+
 export interface TCategory {
   id: number;
   title: string;
@@ -17,5 +18,28 @@ export interface IdCategory {
   title: string;
   description: string;
   image: string;
-  parent: null;
+  parent: null ;
+}
+
+
+export type  TChangeCategory = {
+  id: number | null;
+  title: string;
+  description: string;
+  image: null | File;
+  parent: null | number;
+}
+
+
+export type TPostCategory = {
+  title?: string
+  title_uz?: string
+  title_ru?: string
+  title_en?: string
+  description?: string
+  description_ru?: string
+  description_uz?: string
+  description_en?: string
+  image?: File
+  parent?: null
 }

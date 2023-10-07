@@ -123,7 +123,7 @@ export function TableSort() {
             leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
             value={search}
           />
-          <Link to="/newCatalog">
+          <Link to="/newCategories">
             <Button className={classes.addNewCategory} color='#6EB648'> <MaterialSymbolsAddRounded fontWeight={700} fontSize={22} /> Yangi Categorya qoshish </Button>
           </Link>
 

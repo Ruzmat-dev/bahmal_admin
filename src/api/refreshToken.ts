@@ -5,7 +5,7 @@ import { axiosPublic } from "./axiosPublic";
 const refreshTokenFn = async () => {
   const refreshToken = localStorage.getItem('refresh')
   try {
-    const response = await axiosPublic.post("/accounts/refresh/", {
+    const response = await axiosPublic('uz').post("/accounts/refresh/", {
       refresh: refreshToken,
     });
     const { access, refresh } = response.data;

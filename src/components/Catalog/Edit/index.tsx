@@ -62,16 +62,17 @@
 
 import { useForm } from 'react-hook-form';
 import classes from "./edit.module.css"
-import { useState , useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { axiosPrivate } from '../../../api/axiosPrivate';
-import { TextInput, Button, Text , Loader} from '@mantine/core';
+import { TextInput, Button, Text, Loader } from '@mantine/core';
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { useParams } from 'react-router-dom';
 import { axiosPublic } from '../../../api/axiosPublic';
-import { IdCategory } from '../../../../types/data';
+import { IdCategory, TChangeCategory, TPostCategory } from '../../../../types/data';
 import toast, { Toaster } from 'react-hot-toast';
 import { AxiosError } from 'axios';
+import MaterialSymbolsEditOutlineRounded from '../../icons/MaterialSymbolsEditOutlineRounded';
 interface FormData {
   "title": string,
   "title_ru": string,
@@ -100,23 +101,54 @@ export default function CategoriesEdit() {
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewURL,] = useState<string>('');
-  const [titleProduct , setTitleProduct] = useState<string>('');
+  // const [titleProduct , setTitleProduct] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [prodctData, setProductData] = useState<IdCategory>()
+
+  const [postData, setPostData] = useState<TPostCategory>({
+    title: "" ,
+  title_uz: "" ,
+  title_ru: "" ,
+  title_en: "" ,
+  description: "" ,
+  description_ru: "" ,
+  description_uz: "" ,
+  description_en: "" ,
+  })
+
+  const [product, setProduct] = useState<TChangeCategory>({
+    id: null,
+    description: "",
+    image: null,
+    parent: null,
+    title: ""
+  })
   const { id } = useParams()
 
-  const CategoryId = async () => {
-     try {
-        const res = await axiosPublic.get<IdCategory>(`/categories/${id}`);
-        setTitleProduct(res.data.title);
-        
-      } catch (error) {
-        console.log(error);
-      }
-    
+  const getCategoryId = async () => {
+    try {
+      const uz = await axiosPublic("uz").get<IdCategory>(`/categories/${id}/`);
+      const ru = await axiosPublic("ru").get<IdCategory>(`/categories/${id}/`); 
+      const en = await axiosPublic("en").get<IdCategory>(`/categories/${id}/`);
+      setPostData({...postData, title: uz.data.title , title_uz: uz.data.title , title_en: en.data.title , title_ru: ru.data.title , description: uz.data.description , description_uz: uz.data.description , description_ru: ru.data.description , description_en: en.data.description , parent: uz.data.parent})
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+  const updateData = async () => {
+    try {
+      await axiosPrivate.put<TChangeCategory>(`/categories/${id}/`, product);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  console.log(postData);
+  
+
   useEffect(() => {
-    CategoryId()
+    getCategoryId()
   }, [])
 
   const {
@@ -129,12 +161,13 @@ export default function CategoriesEdit() {
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    const new_data = { ...data, image: selectedFile, parent: id }
+    const new_data = {...postData, image: selectedFile}
 
-
+    console.log(new_data);
+    
     try {
 
-      const response = await axiosPrivate.post('/categories/', new_data, {
+      const response = await axiosPrivate.post(`/categories/`, new_data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -144,10 +177,10 @@ export default function CategoriesEdit() {
       setIsSubmitting(false);
     } catch (error) {
       const axiosError = error as AxiosError;
-      
+
       const myError = axiosError.request?.status ?? 0;
       const errorNumber = Math.floor(myError / 100);
-      
+
       if (errorNumber === 4) {
         toast.error('Xato malumot kiritildi!');
       } else if (errorNumber === 5) {
@@ -175,13 +208,14 @@ export default function CategoriesEdit() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.catalogAdd}>
-      <Text fz="28" fw={'bold'}>{titleProduct}</Text>
+        <Text fz="28" fw={'bold'}>{postData?.title} </Text>
       <TextInput
         label="Title"
         withAsterisk
         placeholder="Input placeholder"
         {...register("title", { min: 3, maxLength: 59 })}
         error={errors.title?.message}
+        defaultValue={postData?.title}
       />
       <TextInput
         label="Title uz"
@@ -189,6 +223,7 @@ export default function CategoriesEdit() {
         placeholder="Title uz"
         {...register("title_uz", { required: true, min: 3, maxLength: 60 })}
         error={errors.title_uz?.message}
+        defaultValue={postData?.title_uz}
       />
       <TextInput
         label="Title ru"
@@ -196,6 +231,7 @@ export default function CategoriesEdit() {
         placeholder="Title ru"
         {...register("title_ru", { required: true, min: 3, maxLength: 60 })}
         error={errors.title_ru?.message}
+        defaultValue={postData?.title_ru}
       />
       <TextInput
         label="Title en"
@@ -203,6 +239,7 @@ export default function CategoriesEdit() {
         placeholder="Title en"
         {...register("title_en", { required: true, min: 3, maxLength: 60 })}
         error={errors.title_ru?.message}
+        defaultValue={postData?.title_en}
       />
       <TextInput
         label="Description"
@@ -210,6 +247,7 @@ export default function CategoriesEdit() {
         placeholder="Description"
         {...register("description", { required: true, min: 3, maxLength: 60 })}
         error={errors.description?.message}
+        defaultValue={postData?.description}
       />
       <TextInput
         label="Description uz"
@@ -217,6 +255,7 @@ export default function CategoriesEdit() {
         placeholder="Description uz"
         {...register("description_uz", { required: true, min: 3, maxLength: 60 })}
         error={errors.description_uz?.message}
+        defaultValue={postData?.description_uz}
       />
       <TextInput
         label="Description ru"
@@ -224,6 +263,7 @@ export default function CategoriesEdit() {
         placeholder="Description ru"
         {...register("description_ru", { required: true, min: 3, maxLength: 60 })}
         error={errors.description_ru?.message}
+        defaultValue={postData?.description_ru}
       />
       <TextInput
         label="Description en"
@@ -231,6 +271,7 @@ export default function CategoriesEdit() {
         placeholder="Description en"
         {...register("description_en", { required: true, min: 3, maxLength: 60 })}
         error={errors.description_en?.message}
+        defaultValue={postData?.description_en}
       />
       <div className={classes.wrapperImages}>
         {/* <TextInput
@@ -244,6 +285,7 @@ export default function CategoriesEdit() {
           onChange={handleFileChange}
           type="file"
           id="picture"
+          // defaultValue={postData?.image}
         />
         {/* </Field> */}
         {selectedFile && (
@@ -257,7 +299,7 @@ export default function CategoriesEdit() {
 
       {/* <input type="submit" /> */}
       <Button disabled={isSubmitting} type='submit' color='#6EB648'>
-      {isSubmitting ? <Loader color='#6EB648'/> : 'Qoshish'}
+        {isSubmitting ? <Loader color='#6EB648' /> : 'Qoshish'}
       </Button>
 
       <Toaster

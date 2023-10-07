@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 
 import { memoizedRefreshToken } from "./refreshToken";
 
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URLL;
 
 axios.interceptors.request.use(
     async(config) => {

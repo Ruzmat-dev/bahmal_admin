@@ -12,6 +12,7 @@ import { axiosPublic } from '../../../api/axiosPublic';
 import { useRef, useState } from "react"
 import { AxiosError } from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import { axiosPrivate } from '../../../api/axiosPrivate';
 
 export default function LoginForm() {
 
@@ -28,7 +29,7 @@ export default function LoginForm() {
 
     setIsSubmitting(true);
     try {
-      const res = await axiosPublic.post("/accounts/login/", {
+      const res = await axiosPrivate.post("/accounts/login/", {
         "username": `${username}`,
         "password": `${password}`
       })

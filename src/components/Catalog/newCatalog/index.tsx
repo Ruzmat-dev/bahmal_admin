@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import classes from "./newCatalog.module.css"
-import { useState  } from 'react';
+import { useState } from 'react';
 import { axiosPrivate } from '../../../api/axiosPrivate';
-import { TextInput, Button,  Loader} from '@mantine/core';
+import { TextInput, Button, Loader } from '@mantine/core';
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import toast, { Toaster } from 'react-hot-toast';
@@ -47,9 +47,10 @@ export default function NewCategories() {
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    const new_data = { ...data, image: selectedFile, parent: null }
-    try {
+    const new_data = { ...data, image: selectedFile }
+    console.log(data);
 
+    try {
       const response = await axiosPrivate.post('/categories/', new_data, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -60,10 +61,11 @@ export default function NewCategories() {
       setIsSubmitting(false);
     } catch (error) {
       const axiosError = error as AxiosError;
-      
+      console.log(error);
+
       const myError = axiosError.request?.status ?? 0;
       const errorNumber = Math.floor(myError / 100);
-      
+
       if (errorNumber === 4) {
         toast.error('Xato malumot kiritildi!');
       } else if (errorNumber === 5) {
@@ -165,7 +167,7 @@ export default function NewCategories() {
       </div>
 
       <Button disabled={isSubmitting} type='submit' color='#6EB648'>
-      {isSubmitting ? <Loader color='#6EB648'/> : 'Qoshish'}
+        {isSubmitting ? <Loader color='#6EB648' /> : 'Qoshish'}
       </Button>
 
       <Toaster

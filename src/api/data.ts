@@ -4,7 +4,7 @@ import { axiosPublic } from "./axiosPublic";
 
 export const getCategories = async() => {
     try { 
-        const res = await axiosPublic.get<TCategory[]>(`/categories/`)
+        const res = await axiosPublic("uz").get<TCategory[]>(`/categories/`)
         return res
     } catch (error) {
         console.log(error)

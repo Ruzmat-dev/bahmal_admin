@@ -44,7 +44,7 @@ export default function CategoriesAdd() {
 
   const CategoryId = async () => {
      try {
-        const res = await axiosPublic.get<IdCategory>(`/categories/${id}`);
+        const res = await axiosPublic("uz").get<IdCategory>(`/categories/${id}/`);
         setTitleProduct(res.data.title);
         
       } catch (error) {
