@@ -1,4 +1,4 @@
-import {  useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Table,
   ScrollArea,
@@ -20,6 +20,7 @@ import { modals } from '@mantine/modals';
 import { axiosPrivate } from '../../api/axiosPrivate';
 import toast, { Toaster } from 'react-hot-toast';
 import MaterialSymbolsAddRounded from '../icons/MaterialSymbolsAddRounded';
+import MaterialSymbolsEditOutlineRounded from '../icons/MaterialSymbolsEditOutlineRounded';
 interface ThProps {
   children: React.ReactNode;
 }
@@ -49,9 +50,9 @@ export function TableSort() {
 
   const handleDelete = async (id: number) => {
     try {
-     await axiosPrivate.delete(`/categories/${id}/`)
-     toast.success('Movafiqiyatli!')
-     fetchData()
+      await axiosPrivate.delete(`/categories/${id}/`)
+      toast.success('Movafiqiyatli!')
+      fetchData()
 
     } catch (error) {
       toast.error('O`chirishda xatolik yuz berdi!');
@@ -68,7 +69,7 @@ export function TableSort() {
 
   useEffect(() => {
     fetchData()
-  },[])
+  }, [])
 
   const openDeleteModal = (e: TCategory) => {
     modals.openConfirmModal({
@@ -101,6 +102,11 @@ export function TableSort() {
         </Link>
       </Table.Td>
       <Table.Td>
+        <Link to={`/categories/edit/${row.id}`}>
+          <MaterialSymbolsEditOutlineRounded fontSize={22} color='gold' cursor="pointer" />
+        </Link>
+      </Table.Td>
+      <Table.Td>
         <MaterialSymbolsDeleteOutlineRounded fontSize={22} color='red' cursor="pointer" onClick={() => openDeleteModal(row)} />
       </Table.Td>
     </Table.Tr>
@@ -110,17 +116,17 @@ export function TableSort() {
     <div className={classes.catalog}>
       <ScrollArea>
         <div className={classes.wrppaerInputAndBtn}>
-        <TextInput
-          placeholder="Categorya boyicha qidiru"
-          mb="md"
-          w={600}
-          leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
-          value={search}
-        />
-        <Link to="/newCatalog">
-        <Button className={classes.addNewCategory} color='#6EB648'> <MaterialSymbolsAddRounded fontWeight={700} fontSize={22}/> Yangi Categorya qoshish </Button>
-        </Link>
-      
+          <TextInput
+            placeholder="Categorya boyicha qidiru"
+            mb="md"
+            w={600}
+            leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
+            value={search}
+          />
+          <Link to="/newCatalog">
+            <Button className={classes.addNewCategory} color='#6EB648'> <MaterialSymbolsAddRounded fontWeight={700} fontSize={22} /> Yangi Categorya qoshish </Button>
+          </Link>
+
         </div>
         <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed">
           <Table.Tbody>
@@ -129,6 +135,7 @@ export function TableSort() {
               <Th>Title</Th>
               <Th>Korish</Th>
               <Th>Qoshish</Th>
+              <Th>Tahrirlash</Th>
               <Th>Ochirish</Th>
             </Table.Tr>
           </Table.Tbody>

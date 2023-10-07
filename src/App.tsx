@@ -3,10 +3,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Layout from "./components/Layout"
 import Dashboard from './pages/Dashboard'
 import Login from "./pages/Login"
-import Catalog from './pages/Catalog'
-import CatalogAdd from './components/Catalog/Add'
-import {CatalogSee} from './components/Catalog/See/index'
-import NewCatalog from './components/Catalog/newCatalog'
+import CategoriesSee from './components/Catalog/See/index'
+import CategoriesEdit from './components/Catalog/Edit'
+import CategoriesAdd from './components/Catalog/Add'
+import NewCategories from './components/Catalog/newCatalog'
+import Categories from './pages/Catalog'
 
 
 
@@ -21,10 +22,11 @@ const App = () => {
           <Routes>
             <Route path={"/"} element={login ? <Layout login={login}><Dashboard /></Layout> : <Login />} />
             <Route path={"/dashbord"} element={<Layout login={login}> <Dashboard /> </Layout>} />
-            <Route path={"/categories"} element={<Layout login={login}> <Catalog /> </Layout>}/>
-            <Route path={"/newCatalog"} element={<Layout login={login}><NewCatalog/></Layout>} />
-            <Route path={"/categories/see/:id"} element={<Layout login={login}><CatalogSee/></Layout>} />
-            <Route path={"/categories/add/:id"} element={<Layout login={login}><CatalogAdd/></Layout>} />
+            <Route path={"/categories"} element={<Layout login={login}> <Categories /> </Layout>}/>
+            <Route path={"/newCategories"} element={<Layout login={login}><NewCategories/></Layout>} />
+            <Route path={"/categories/see/:id"} element={<Layout login={login}><CategoriesSee/></Layout>} />
+            <Route path={"/categories/add/:id"} element={<Layout login={login}><CategoriesAdd/></Layout>} />
+            <Route path={"/categories/edit/:id"} element={<Layout login={login}>< CategoriesEdit/></Layout>} />
           </Routes>
         </BrowserRouter>
     </div>

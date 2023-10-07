@@ -43,7 +43,7 @@ function shortenText(text: string, maxLength: number) {
     return text.substring(0, maxLength - 3) + '...';
 
 }
-export function CatalogSee() {
+export default function CategoriesSee() {
     const [search,] = useState('');
     const [category, setCategory] = useState<TCategory[] | undefined>([]);
     // const [parent , setParent] = useState<number>(null)

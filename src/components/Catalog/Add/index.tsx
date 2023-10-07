@@ -34,7 +34,7 @@ const schema = yup
   })
   .required()
 
-export default function CatalogAdd() {
+export default function CategoriesAdd() {
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewURL,] = useState<string>('');

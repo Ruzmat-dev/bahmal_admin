@@ -1,6 +1,6 @@
 import { TableSort } from "../components/Catalog"
 
-const Catalog = () => {
+const Categories = () => {
   return (
     <div>
         <TableSort/>
@@ -8,4 +8,4 @@ const Catalog = () => {
   )
 }
 
-export default Catalog
+export default Categories
