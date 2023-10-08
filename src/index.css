@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'CustomFont';
+    src: url('/src/fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+body {
+    font-family: 'CustomFont', sans-serif;
+}
+
+input[type=text]:focus  {
+    border: 1px solid #6EB648;
+}

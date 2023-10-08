@@ -116,6 +116,7 @@ export default function CategoriesAdd() {
       <Text fz="28" fw={'bold'}>{titleProduct}</Text>
       <TextInput
         label="Title"
+        type='text'
         withAsterisk
         placeholder="Input placeholder"
         {...register("title", { min: 3, maxLength: 59 })}
@@ -124,6 +125,7 @@ export default function CategoriesAdd() {
       <TextInput
         label="Title uz"
         withAsterisk
+        type='text'
         placeholder="Title uz"
         {...register("title_uz", { required: true, min: 3, maxLength: 60 })}
         error={errors.title_uz?.message}
@@ -131,6 +133,7 @@ export default function CategoriesAdd() {
       <TextInput
         label="Title ru"
         withAsterisk
+        type='text'
         placeholder="Title ru"
         {...register("title_ru", { required: true, min: 3, maxLength: 60 })}
         error={errors.title_ru?.message}
@@ -138,6 +141,7 @@ export default function CategoriesAdd() {
       <TextInput
         label="Title en"
         withAsterisk
+        type='text'
         placeholder="Title en"
         {...register("title_en", { required: true, min: 3, maxLength: 60 })}
         error={errors.title_ru?.message}
@@ -145,6 +149,7 @@ export default function CategoriesAdd() {
       <TextInput
         label="Description"
         withAsterisk
+        type='text'
         placeholder="Description"
         {...register("description", { required: true, min: 3, maxLength: 60 })}
         error={errors.description?.message}
@@ -152,6 +157,7 @@ export default function CategoriesAdd() {
       <TextInput
         label="Description uz"
         withAsterisk
+        type='text'
         placeholder="Description uz"
         {...register("description_uz", { required: true, min: 3, maxLength: 60 })}
         error={errors.description_uz?.message}
@@ -159,6 +165,7 @@ export default function CategoriesAdd() {
       <TextInput
         label="Description ru"
         withAsterisk
+        type='text'
         placeholder="Description ru"
         {...register("description_ru", { required: true, min: 3, maxLength: 60 })}
         error={errors.description_ru?.message}
@@ -166,6 +173,7 @@ export default function CategoriesAdd() {
       <TextInput
         label="Description en"
         withAsterisk
+        type='text'
         placeholder="Description en"
         {...register("description_en", { required: true, min: 3, maxLength: 60 })}
         error={errors.description_en?.message}

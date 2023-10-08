@@ -15,6 +15,13 @@ import { axiosPrivate } from '../../../api/axiosPrivate';
 
 export default function LoginForm() {
 
+  const inputFocusStyles = {
+    '&:focus': {
+      borderColor: 'black', // Change this to the color you desire
+      boxShadow: '0 0 0 2px rgba(0, 0, 255, 0.3)', // Optional: Add a box shadow on focus
+    },
+  };
+
   const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -76,10 +83,9 @@ export default function LoginForm() {
       <Title ta="center" c="#6EB648">
         Bahmal
       </Title>
-
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput label="Username" placeholder="your username" required ref={usernameRef} onChange={(e) => setUsername(e.target.value)} />
-        <PasswordInput label="Password" placeholder="Your password" required ref={passwordRef} mt="md" onChange={(e) => setPassword(e.target.value)} />
+        <TextInput  style={{...inputFocusStyles}} type='text'  label="Username" placeholder="your username" required ref={usernameRef} onChange={(e) => setUsername(e.target.value)} />
+        <PasswordInput label="Password" type='password' placeholder="Your password" required ref={passwordRef} mt="md" onChange={(e) => setPassword(e.target.value)} />
         <Group justify="space-between" mt="lg">
         </Group>
         <Button onClick={handleSubmit} fullWidth mt="xl" disabled={isSubmitting} color='#6EB648'>
