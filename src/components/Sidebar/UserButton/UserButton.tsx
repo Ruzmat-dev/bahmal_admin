@@ -7,7 +7,7 @@ export function UserButton() {
     <UnstyledButton className={classes.user}>
       <Group>
         <Avatar
-          src="../../../../public/favicon.ico"
+          src="../../../../public/png-transparent-male-portrait-avatar-computer-icons-icon-design-avatar-flat-face-icon-people-head-cartoon.png"
           style={{backgroundSize: "cover"}}
           radius="xl"
         />
@@ -17,7 +17,7 @@ export function UserButton() {
             Jumaniyazov
           </Text>
 
-          <Text c="dimmed" size="xs">
+          <Text  size="xs">
             bahmal@gmail.com
           </Text>
         </div>

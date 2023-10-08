@@ -86,14 +86,14 @@ interface FormData {
 
 const schema = yup
   .object({
-    title: yup.string().required(),
-    title_ru: yup.string().required(),
-    title_uz: yup.string().required(),
-    title_en: yup.string().required(),
-    description: yup.string().required(),
-    description_ru: yup.string().required(),
-    description_en: yup.string().required(),
-    description_uz: yup.string().required(),
+    title: yup.string(),
+    title_ru: yup.string(),
+    title_uz: yup.string(),
+    title_en: yup.string(),
+    description: yup.string(),
+    description_ru: yup.string(),
+    description_en: yup.string(),
+    description_uz: yup.string(),
   })
   .required()
 
@@ -144,7 +144,6 @@ export default function CategoriesEdit() {
     }
   }
 
-  console.log(postData);
   
 
   useEffect(() => {
@@ -159,21 +158,21 @@ export default function CategoriesEdit() {
     resolver: yupResolver(schema)
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async () => {
+    console.log(postData);
+    
     setIsSubmitting(true);
     const new_data = {...postData, image: selectedFile}
 
     console.log(new_data);
     
     try {
-
-      const response = await axiosPrivate.post(`/categories/`, new_data, {
+      await axiosPrivate.patch(`/categories/${id}/`, new_data, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data', // Set content type to form data
+        },
       });
       toast.success('Movafiqiyatli Qoshildi!')
-      console.log(response);
       setIsSubmitting(false);
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -192,8 +191,9 @@ export default function CategoriesEdit() {
     }
   }
 
-
-
+  function handleOnChangeName(e: string) {
+    setPostData({ ...postData, title: e });
+  }
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
@@ -215,7 +215,9 @@ export default function CategoriesEdit() {
         placeholder="Input placeholder"
         {...register("title", { min: 3, maxLength: 59 })}
         error={errors.title?.message}
-        defaultValue={postData?.title}
+        // defaultValue={postData?.title}
+        value={postData.title}
+        onChange={(e) => handleOnChangeName(e.target.value)}
       />
       <TextInput
         label="Title uz"

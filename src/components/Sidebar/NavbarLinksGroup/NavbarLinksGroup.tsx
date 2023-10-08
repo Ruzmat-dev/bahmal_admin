@@ -13,7 +13,7 @@ interface LinksGroupProps {
 }
 
 export function LinksGroup({ icon: Icon, label, initiallyOpened, links , link }: LinksGroupProps) {
-    // console.log(link);
+    console.log(links);
     
     const hasLinks = Array.isArray(links);
     const [opened, setOpened] = useState(initiallyOpened || false);

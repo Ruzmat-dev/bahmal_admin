@@ -41,6 +41,38 @@ const DashbordPage = () => {
         </Button>
         </Link>
       </Card>
+      <Card shadow="sm" padding="lg" className={classes.dashbord_card}   radius="md" withBorder>
+
+        <Text className={classes.dashbord_title}>
+          Mahsulotlar
+        </Text>
+
+        <Text className={classes.dashbord_number}>
+           <CountUp end={category?.length || 0} delay={80}/>
+        </Text>
+
+        <Link to="/categories">
+        <Button className={classes.dashbord_btn} fullWidth mt="md" radius="md">
+          Batafsil
+        </Button>
+        </Link>
+      </Card>
+      <Card shadow="sm" padding="lg" className={classes.dashbord_card}   radius="md" withBorder>
+
+        <Text className={classes.dashbord_title}>
+          Mahsulotlar
+        </Text>
+
+        <Text className={classes.dashbord_number}>
+           <CountUp end={category?.length || 0} delay={80}/>
+        </Text>
+
+        <Link to="/categories">
+        <Button className={classes.dashbord_btn} fullWidth mt="md" radius="md">
+          Batafsil
+        </Button>
+        </Link>
+      </Card>
     </Box>
   );
 }
