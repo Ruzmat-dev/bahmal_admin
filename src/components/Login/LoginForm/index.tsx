@@ -8,7 +8,6 @@ import {
   Title,
   Loader
 } from '@mantine/core';
-import { axiosPublic } from '../../../api/axiosPublic';
 import { useRef, useState } from "react"
 import { AxiosError } from 'axios';
 import toast, { Toaster } from 'react-hot-toast';

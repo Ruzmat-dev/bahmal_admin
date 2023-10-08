@@ -3,52 +3,50 @@
 }
 
 /* Dashbord Styles */
-
-.dashbord {
+.dashbord{
     width: 100%;
     margin: auto;
     display: flex;
+    align-items: center;
+}
+.wrapper {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
     gap: 15px;
 }
 
 .dashbord_card {
-    width: 32%;
-    height: 250px;
+    width: 420px;
+    height: 150px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
 
 .dashbord_title {
-    font-size: 35px;
-    font-weight: bold;
+    font-size: 30px;
+    font-weight: lighter;
     line-height: 1.2;
-    color: var(--color);
+    color: #ffffffad;
 }
 
 .dashbord_number {
-    font-size: 35px;
+    font-size: 42px;
     font-weight: bold;
     line-height: 1.2;
-    color: #0000008f;
+    color: #fff;
 }
 
-.dashbord_btn {
-    height: 45px;
-    background-color: var(--color);
-    font-size: 22px;
-    font-weight: 400;
+
+.link {
+    text-decoration: none;
 }
 
-.dashbord_btn:hover {
-    color: var(--color);
-    border: 1px solid var(--color);
-    background-color: #fff;
-}
-
-@media(max-width:1200px) {
+/* @media(max-width:1200px) {
     .dashbord_card {
         width: 48%;
     }
@@ -71,4 +69,4 @@
         height: 40px;
         font-size: 16px;
     }
-}
+} */
