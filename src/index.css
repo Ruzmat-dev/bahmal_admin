@@ -14,3 +14,8 @@ input[type=text]:focus  {
 a {
     text-decoration: none;
 }
+
+[data-mantine-color-scheme=light] .m-6c018570[data-variant=default]  {
+
+    --_input-bd-focus: #6EB648;
+}

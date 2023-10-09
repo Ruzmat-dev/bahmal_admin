@@ -1,12 +1,18 @@
 import { useForm } from 'react-hook-form';
 import classes from "./newCatalog.module.css"
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { axiosPrivate } from '../../../api/axiosPrivate';
-import { TextInput, Button, Loader } from '@mantine/core';
+import { TextInput, Button, Loader, Textarea, Text } from '@mantine/core';
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import toast, { Toaster } from 'react-hot-toast';
 import { AxiosError } from 'axios';
+import TwemojiFlagUzbekistan from '../../icons/TwemojiFlagUzbekistan';
+import TwemojiFlagRussia from '../../icons/TwemojiFlagRussia';
+import FxemojiGreatbritainflag from '../../icons/FxemojiGreatbritainflag';
+import MaterialSymbolsDownload from '../../icons/MaterialSymbolsDownload';
+import MaterialSymbolsArrowBackRounded from '../../icons/MaterialSymbolsArrowBackRounded';
+import { useNavigate } from 'react-router-dom';
 interface FormData {
   "title": string,
   "title_ru": string,
@@ -32,9 +38,10 @@ const schema = yup
   .required()
 
 export default function NewCategories() {
+  const fileRef = useRef<HTMLInputElement | null>(null)
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewURL,] = useState<string>('');
+  const [previewURL, setPreviewImage] = useState<string>('https://content.hostgator.com/img/weebly_image_sample.png');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const {
@@ -77,97 +84,160 @@ export default function NewCategories() {
     }
   }
 
-
+  const navigate = useNavigate();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      setSelectedFile(file);
+    const file = event.currentTarget.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const result = e.target?.result as string
+        setPreviewImage(result)
+      }
+      setSelectedFile(file)
 
-      console.log('Selected file:', file.name);
-    } else {
-      setSelectedFile(null);
+      reader.readAsDataURL(file)
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.catalogAdd}>
-      <TextInput
-        label="Title"
-        withAsterisk
-        placeholder="Input placeholder"
-        {...register("title", { min: 3, maxLength: 59 })}
-        error={errors.title?.message}
-      />
-      <TextInput
-        label="Title uz"
-        withAsterisk
-        placeholder="Title uz"
-        {...register("title_uz", { required: true, min: 3, maxLength: 60 })}
-        error={errors.title_uz?.message}
-      />
-      <TextInput
-        label="Title ru"
-        withAsterisk
-        placeholder="Title ru"
-        {...register("title_ru", { required: true, min: 3, maxLength: 60 })}
-        error={errors.title_ru?.message}
-      />
-      <TextInput
-        label="Title en"
-        withAsterisk
-        placeholder="Title en"
-        {...register("title_en", { required: true, min: 3, maxLength: 60 })}
-        error={errors.title_ru?.message}
-      />
-      <TextInput
-        label="Description"
-        withAsterisk
-        placeholder="Description"
-        {...register("description", { required: true, min: 3, maxLength: 60 })}
-        error={errors.description?.message}
-      />
-      <TextInput
-        label="Description uz"
-        withAsterisk
-        placeholder="Description uz"
-        {...register("description_uz", { required: true, min: 3, maxLength: 60 })}
-        error={errors.description_uz?.message}
-      />
-      <TextInput
-        label="Description ru"
-        withAsterisk
-        placeholder="Description ru"
-        {...register("description_ru", { required: true, min: 3, maxLength: 60 })}
-        error={errors.description_ru?.message}
-      />
-      <TextInput
-        label="Description en"
-        withAsterisk
-        placeholder="Description en"
-        {...register("description_en", { required: true, min: 3, maxLength: 60 })}
-        error={errors.description_en?.message}
-      />
-      <div className={classes.wrapperImages}>
-        <input
-          accept='image/*'
-          onChange={handleFileChange}
-          type="file"
-          id="picture"
-        />
-        {/* </Field> */}
-        {selectedFile && (
-          <img
-            src={previewURL}
-            alt="Preview"
-            style={{ maxWidth: '100%', maxHeight: '200px' }}
-          />
-        )}
+      <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" , alignSelf: "center" }}>
+        <div className={classes.goBackBtn} onClick={() => navigate(-1)}>
+          <MaterialSymbolsArrowBackRounded fontSize={28}  style={{marginTop: "6px"}}/>
+        </div>
+          <Text c="#6EB648" size='xl' fw={'initial'}> Yangi Categorya qo`shish </Text>
+        <div className={classes.imgWrapper}>
+          <div className={classes.imgWrapperItem} onClick={() => fileRef.current?.click()}>
+            <span>
+              <MaterialSymbolsDownload fontSize={56} color='#6EB648' />
+            </span>
+          </div>
+          <div className={classes.wrapperImages}>
+            <input
+              hidden
+              ref={fileRef}
+              accept='image/*'
+              onChange={handleFileChange}
+              type="file"
+              id="picture"
+            />
+
+            <img
+              src={previewURL}
+              alt="Preview"
+            />
+
+          </div>
+        </div>
       </div>
 
-      <Button disabled={isSubmitting} type='submit' color='#6EB648'>
-        {isSubmitting ? <Loader color='#6EB648' /> : 'Qoshish'}
+      <TextInput
+        label="Nomi"
+        withAsterisk
+        placeholder="Nomi"
+        {...register("title", { min: 3, maxLength: 59 })}
+        size='md'
+        error={errors.title?.message}
+        type='text'
+      />
+      <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+        <TextInput
+          label={
+            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span >Nomi</span> <TwemojiFlagUzbekistan fontSize={18} />
+            </span>
+          }
+          style={{ flex: "1", height: "60px" }}
+          size='md'
+          h={70}
+          placeholder="Nomi"
+          {...register("title_uz", { required: true, min: 3, maxLength: 60 })}
+          error={errors.title_uz?.message}
+          type='text'
+        />
+        <TextInput
+          label={
+            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span >Названия</span> <TwemojiFlagRussia fontSize={18} />
+            </span>
+          }
+          placeholder="Названия"
+          style={{ flex: "1" }}
+          size='md'
+          {...register("title_ru", { required: true, min: 3, maxLength: 60 })}
+          error={errors.title_ru?.message}
+          type='text'
+        />
+        <TextInput
+          label={
+            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span >Title</span> <FxemojiGreatbritainflag fontSize={18} />
+            </span>
+          }
+          placeholder="Title"
+          style={{ flex: "1" }}
+          size='md'
+          {...register("title_en", { required: true, min: 3, maxLength: 60 })}
+          error={errors.title_ru?.message}
+          type='text'
+        />
+      </div>
+      <Textarea
+        label="Ma'lumot"
+        withAsterisk
+        placeholder="Ma'lumot"
+        {...register("description", { required: true, min: 3, maxLength: 60 })}
+        size='md'
+        error={errors.description?.message}
+      />
+      <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+
+        <Textarea
+          label={
+            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span >Ma'lumot</span> <TwemojiFlagUzbekistan fontSize={18} />
+            </span>
+          }
+          placeholder="Ma'lumot"
+          {...register("description_uz", { required: true, min: 3, maxLength: 60 })}
+          error={errors.description_uz?.message}
+          style={{ flex: "1" }}
+          size='md'
+        />
+        <Textarea
+          label={
+            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span >Информация</span> <TwemojiFlagRussia fontSize={18} />
+            </span>
+          }
+          placeholder="Информация"
+          {...register("description_ru", { required: true, min: 3, maxLength: 60 })}
+          error={errors.description_ru?.message}
+          style={{ flex: "1" }}
+          size='md'
+        />
+        <Textarea
+          label={
+            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span >Description</span> <FxemojiGreatbritainflag fontSize={18} />
+            </span>
+          }
+          placeholder="Description"
+          {...register("description_en", { required: true, min: 3, maxLength: 60 })}
+          error={errors.description_en?.message}
+          style={{ flex: "1" }}
+          size='md'
+
+        />
+      </div>
+
+      
+
+      <Button disabled={isSubmitting} type='submit' color='#6EB648' h={50} w={435} size='md'>
+        <Text >
+          {isSubmitting ? <Loader color='#6EB648' /> : 'Qoshish'}
+        </Text>
       </Button>
 
       <Toaster

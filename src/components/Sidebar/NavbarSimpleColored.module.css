@@ -31,15 +31,6 @@
     border-radius: var(--mantine-radius-sm);
     font-weight: 500;
 
-    &:hover {
-        background-color: #6EB648;
-        color: #F9FAFC;
-
-        .linkIcon {
-            color: #F9FAFC;
-        }
-    }
-
     &[data-active] {
 
         &,

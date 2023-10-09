@@ -3,13 +3,12 @@ import MaterialSymbolsAddShoppingCartRounded from '../icons/MaterialSymbolsAddSh
 import MaterialSymbolsCategoryOutlineRounded from '../icons/MaterialSymbolsCategoryOutlineRounded';
 import MaterialSymbolsHomeRepairServiceOutlineRounded from '../icons/MaterialSymbolsHomeRepairServiceOutlineRounded';
 import MaterialSymbolsTeamDashboardOutline from '../icons/MaterialSymbolsTeamDashboardOutline';
-import { useState } from 'react';
 import {
   IconSwitchHorizontal,
   IconLogout,
 } from '@tabler/icons-react';
 import classes from './NavbarSimpleColored.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import MaterialSymbolsGalleryThumbnailOutlineRounded from '../icons/MaterialSymbolsGalleryThumbnailOutlineRounded';
 import GameIconsAchievement from '../icons/GameIconsAchievement';
 import CarbonBlog from '../icons/CarbonBlog';
@@ -31,22 +30,25 @@ const mockdata = [
 ];
 
 export function NavbarNested() {
-  const [active, setActive] = useState('Billing');
+  const {pathname} = useLocation()
+  console.log(pathname);
+  
 
   const links = mockdata.map((item) => (
     <Link
       className={classes.link}
-      data-active={item.label === active || undefined}
+      data-active={pathname.includes(item.link) ? true : undefined}
       to={item.link}
       key={item.label}
-      onClick={() => {
-        setActive(item.label);
-      }}
     >
     <item.icon className={classes.linkIcon} />
       <span>{item.label}</span>
     </Link>
   ));
+
+
+
+
 
   return (
     <nav className={classes.navbar}>

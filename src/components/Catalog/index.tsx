@@ -10,7 +10,6 @@ import {
 } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 import classes from './TableSort.module.css';
-import MaterialSymbolsAddCircleOutlineRounded from '../icons/MaterialSymbolsAddCircleOutlineRounded';
 import MaterialSymbolsDeleteOutlineRounded from '../icons/MaterialSymbolsDeleteOutlineRounded';
 import { getCategories } from '../../api/data';
 import { TCategory } from '../../../types/data';
@@ -86,21 +85,22 @@ export function TableSort() {
     })
   }
 
-  const rows = category && category.map((row ) => (
+  const rows = category && category.map((row , index) => (
     row.parent == null &&
+    
     <Table.Tr key={row.id}>
-      <Table.Td>{row.id}</Table.Td>
+      <Table.Td>{index+1}</Table.Td>
       <Table.Td>{shortenText(row.title, 24)} </Table.Td>
       <Table.Td className={classes.catalog_iconWrapper}>
         <Link to={`/categories/see/${row.id}`}>
           <MaterialSymbolsVisibilityOutlineRounded fontSize={22} color='#A9A9A9' cursor="pointer" />
         </Link>
       </Table.Td>
-      <Table.Td>
+      {/* <Table.Td>
         <Link to={`/categories/add/${row.id}`}>
           <MaterialSymbolsAddCircleOutlineRounded fontSize={22} color='#6EB648' cursor="pointer" />
         </Link>
-      </Table.Td>
+      </Table.Td> */}
       <Table.Td>
         <Link to={`/categories/edit/${row.id}`}>
           <MaterialSymbolsEditOutlineRounded fontSize={22} color='gold' cursor="pointer" />
@@ -138,7 +138,7 @@ export function TableSort() {
               <Th>Id</Th>
               <Th>Title</Th>
               <Th>Korish</Th>
-              <Th>Qoshish</Th>
+              {/* <Th>Qoshish</Th> */}
               <Th>Tahrirlash</Th>
               <Th>Ochirish</Th>
             </Table.Tr>
