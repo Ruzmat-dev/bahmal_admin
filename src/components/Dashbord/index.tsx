@@ -6,35 +6,64 @@ import { TCategory, TAchievement, TBlogs, TGalleries, ProductResponse, TStatisti
 import CountUp from 'react-countup';
 import { Link } from "react-router-dom";
 import MaterialSymbolsAddRounded from "../icons/MaterialSymbolsAddRounded";
+import MaterialSymbolsGalleryThumbnailOutlineRounded from "../icons/MaterialSymbolsGalleryThumbnailOutlineRounded";
+import MaterialSymbolsCategoryOutlineRounded from "../icons/MaterialSymbolsCategoryOutlineRounded";
+import GameIconsAchievement from "../icons/GameIconsAchievement";
+import CarbonBlog from "../icons/CarbonBlog";
+import IonNewspaperOutline from "../icons/IonNewspaperOutline";
+import MaterialSymbolsAddShoppingCartRounded from "../icons/MaterialSymbolsAddShoppingCartRounded";
+import AkarIconsStatisticUp from "../icons/AkarIconsStatisticUp";
 
 
 
 
 const DashbordPage = () => {
-  const [category, setCategory] = useState<TCategory[] | undefined>([]);
-  const [achievement, setAchievement] = useState<TAchievement[] | undefined>([]);
-  const [blog, setBlog] = useState<TBlogs[] | undefined>([]);
-  const [galleri, setGalleri] = useState<TGalleries[] | undefined>([]);
-  const [news, setNews] = useState<TBlogs[] | undefined>([]);
-  const [product, setProduct] = useState<ProductResponse[] | undefined>([]);
-  const [statistic, setStatistic] = useState<TStatistics[] | undefined>([]);
+  const [stats, setStats] = useState<{
+    cats?: number;
+    achievements?: number;
+    blogs?: number;
+    galleries?: number;
+    news?: number;
+    products?: number;
+    statistics?: number
+  }>({})
+  // const [category, setCategory] = useState<TCategory[] | undefined>([]);
+  // const [achievement, setAchievement] = useState<TAchievement[] | undefined>([]);
+  // const [blog, setBlog] = useState<TBlogs[] | undefined>([]);
+  // const [galleri, setGalleri] = useState<TGalleries[] | undefined>([]);
+  // const [news, setNews] = useState<TBlogs[] | undefined>([]);
+  // const [product, setProduct] = useState<ProductResponse[] | undefined>([]);
+  // const [statistic, setStatistic] = useState<TStatistics[] | undefined>([]);
 
   const fetchData = async () => {
     try {
-      const categorys = await getCategories()
-      const achievements = await getAchievements()
-      const blogs = await getBlogs()
-      const galleries = await getGalleries()
-      const newss = await getNews()
-      const products = await getProducts()
-      const statistics = await getStatistics()
-      setCategory(categorys?.data);
-      setAchievement(achievements?.data)
-      setBlog(blogs?.data)
-      setGalleri(galleries?.data)
-      setNews(newss?.data)
-      setProduct(products?.data)
-      setStatistic(statistics?.data)
+      // const categorys = await getCategories()
+      // const achievements = await getAchievements()
+      // const blogs = await getBlogs()
+      // const galleries = await getGalleries()
+      // const newss = await getNews()
+      // const products = await getProducts()
+      // const statistics = await getStatistics()
+
+      const [ cats, achievements, blogs, galleries, news, products, statistics] = await Promise.all([getCategories(), getAchievements(), getBlogs(), getGalleries(), getNews(), getProducts(), getStatistics()])
+      setStats({
+        cats: cats?.data.length,
+        achievements: achievements?.data.length,
+        blogs: blogs?.data.count,
+        galleries: galleries?.data.length,
+        news: news?.data.count,
+        products: products?.data.count,
+        statistics: statistics?.data.length
+      })
+      // setCategory(categorys?.data);
+      // setAchievement(achievements?.data)
+      // setBlog(blogs?.data)
+      // setGalleri(galleries?.data)
+      // setNews(newss?.data)
+      // setProduct(products?.data)
+      // setStatistic(statistics?.data)
+      // console.log(categorys);
+      
     } catch (error) {
       console.log(error);
     }
@@ -44,13 +73,13 @@ const DashbordPage = () => {
   }, [])
   
   const data = [
-    { label: "Categoryalar", icon: "salom", color: "#CE9FFC", link: "/categories" , count: category},
-    { label: "Yutuqlar", icon: "salom", color: "#94C15C", link: "/achievement" , count: achievement},
-    { label: "Blog", icon: "salom", color: "#91A2C2", link: "/blog" , count: blog?.results},    // xato 
-    { label: "Galereyalar", icon: "salom", color: "#F2C94C", link: "/galleries" , count: galleri}, 
-    { label: "Yangiliklar", icon: "salom", color: "#7D6391", link: "/news" , count: news?.results},   // xato
-    { label: "Mahsulotlar", icon: "salom", color: "#91A7FA", link: "/products" , count: product?.results}, // xato   
-    { label: "Statistika", icon: "salom", color: "#6B5C6C", link: "/statistics" , count: statistic},    
+    { label: "Categoryalar", icon: MaterialSymbolsCategoryOutlineRounded, color: "linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%)", link: "/categories" , count: stats.cats},
+    { label: "Yutuqlar", icon: GameIconsAchievement, color: "linear-gradient(to right, #8360c3, #2ebf91)", link: "/achievement" , count: stats.achievements},
+    { label: "Blog", icon: CarbonBlog, color: "linear-gradient(to right, #fc5c7d, #6a82fb)", link: "/blog" , count: stats.blogs },    // xato 
+    { label: "Galereyalar", icon: MaterialSymbolsGalleryThumbnailOutlineRounded, color: "linear-gradient(to right, #2c3e50, #4ca1af)", link: "/galleries" , count: stats.galleries}, 
+    { label: "Yangiliklar", icon: IonNewspaperOutline, color: "linear-gradient(to right, #00b09b, #96c93d)", link: "/news" , count: stats.news},   // xato
+    { label: "Mahsulotlar", icon: MaterialSymbolsAddShoppingCartRounded, color: "radial-gradient( circle 759px at -6.7% 50%, rgba(80,131,73,1) 0%, rgba(140,209,131,1) 26.2%, rgba(178,231,170,1) 50.6%, rgba(144,213,135,1) 74.1%, rgba(75,118,69,1) 100.3% )", link: "/products" , count: stats.products}, // xato   
+    { label: "Statistika", icon: AkarIconsStatisticUp, color: "linear-gradient(to right, #ff6e7f, #bfe9ff)", link: "/statistics" , count: stats.statistics},    
   ]
   const cards = data.map((e) =>
     <Link
@@ -58,17 +87,17 @@ const DashbordPage = () => {
       to={e.link}
       key={e.label}
     >
-      <Card shadow="sm" padding="lg" className={classes.dashbord_card} bg={e.color} radius="md" withBorder>
+      <Card shadow="sm" padding="lg" className={classes.dashbord_card} style={{backgroundImage: e.color}} radius="md" withBorder>
         <div>
           <Text className={classes.dashbord_number}>
-            <CountUp end={e.count?.length || 0} delay={80} />
+            <CountUp end={e.count} delay={80} />
           </Text>
           <Text className={classes.dashbord_title}>
             {e.label}
           </Text>
         </div>
         <div>
-          <MaterialSymbolsAddRounded fontSize={42} color="#fff"/>
+          <e.icon fontSize={42} color="#fff"/>
         </div>
       </Card>
     </Link>

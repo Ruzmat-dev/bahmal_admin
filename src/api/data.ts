@@ -22,7 +22,7 @@ export const getAchievements = async() => {
 
 export const getBlogs = async() => {
     try { 
-        const res = await axiosPublic("uz").get<TBlogs[]>(`/blogs/`)
+        const res = await axiosPublic("uz").get<TBlogs>(`/blogs/`)
         return res
     } catch (error) {
         console.log(error)
@@ -40,7 +40,7 @@ export const getGalleries = async() => {
 
 export const getNews = async() => {
     try { 
-        const res = await axiosPublic("uz").get<TBlogs[]>(`/news/`)
+        const res = await axiosPublic("uz").get<TBlogs>(`/news/`)
         return res
     } catch (error) {
         console.log(error)
@@ -49,7 +49,7 @@ export const getNews = async() => {
 
 export const getProducts = async() => {
     try { 
-        const res = await axiosPublic("uz").get<ProductResponse[]>(`/products/`)
+        const res = await axiosPublic("uz").get<ProductResponse>(`/products/`)
         return res
     } catch (error) {
         console.log(error)

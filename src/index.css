@@ -10,3 +10,7 @@ body {
 input[type=text]:focus  {
     border: 1px solid #6EB648;
 }
+
+a {
+    text-decoration: none;
+}

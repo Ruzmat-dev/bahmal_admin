@@ -1,6 +1,6 @@
 import { UserButton } from "../Sidebar/UserButton/UserButton"
 import classes from "./topbar.module.css"
-import logo from "../../../public/white-logo.png"
+import logo from "../../../public/green-logo.png"
 
 const TopBar = () => {
   return (

@@ -2,6 +2,6 @@
   display: block;
   width: 100%;
   padding: var(--mantine-spacing-md);
-  color: #fff;
-  background-color:  #6fb64891;
+  /* color: #fff; */
+  /* background-color:  #6fb64891; */
 }

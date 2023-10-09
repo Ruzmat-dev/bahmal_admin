@@ -10,18 +10,24 @@ import {
 } from '@tabler/icons-react';
 import classes from './NavbarSimpleColored.module.css';
 import { Link } from 'react-router-dom';
+import MaterialSymbolsGalleryThumbnailOutlineRounded from '../icons/MaterialSymbolsGalleryThumbnailOutlineRounded';
+import GameIconsAchievement from '../icons/GameIconsAchievement';
+import CarbonBlog from '../icons/CarbonBlog';
+import IonNewspaperOutline from '../icons/IonNewspaperOutline';
+import MaterialSymbolsPerson from '../icons/MaterialSymbolsPerson';
+import SolarUsersGroupTwoRoundedOutline from '../icons/SolarUsersGroupTwoRoundedOutline';
 
 const mockdata = [
   { label: 'Dashbord', icon: MaterialSymbolsTeamDashboardOutline, link: "/dashbord" },
   { label: 'Categoryalar', icon: MaterialSymbolsCategoryOutlineRounded, link: "/categories" },
-  { label: 'Yutuqlar', icon: MaterialSymbolsCategoryOutlineRounded, link: "/achievements" },
-  { label: 'Galereyalar', icon: MaterialSymbolsCategoryOutlineRounded, link: "/galleries" },
-  { label: 'Bloglar', icon: MaterialSymbolsCategoryOutlineRounded, link: "/blog" },
-  { label: 'Yangiliklar', icon: MaterialSymbolsCategoryOutlineRounded, link: "/news" },
+  { label: 'Yutuqlar', icon: GameIconsAchievement, link: "/achievements" },
+  { label: 'Galereyalar', icon: MaterialSymbolsGalleryThumbnailOutlineRounded, link: "/galleries" },
+  { label: 'Bloglar', icon: CarbonBlog, link: "/blog" },
+  { label: 'Yangiliklar', icon: IonNewspaperOutline, link: "/news" },
   { label: 'Mahsulotlar', icon: MaterialSymbolsAddShoppingCartRounded, link: "/products" },
   { label: 'Xizmatlar', icon: MaterialSymbolsHomeRepairServiceOutlineRounded, link: "/services" },
-  { label: 'Guruhlar', icon: MaterialSymbolsAddShoppingCartRounded, link: "/grup" },
-  { label: 'Foydalanuvchilar', icon: MaterialSymbolsHomeRepairServiceOutlineRounded, link: "/users" },
+  { label: 'Guruhlar', icon: MaterialSymbolsPerson, link: "/grup" },
+  { label: 'Foydalanuvchilar', icon: SolarUsersGroupTwoRoundedOutline, link: "/users" },
 ];
 
 export function NavbarNested() {

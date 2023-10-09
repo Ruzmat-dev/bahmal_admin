@@ -86,7 +86,7 @@ export function TableSort() {
     })
   }
 
-  const rows = category && category.map((row) => (
+  const rows = category && category.map((row ) => (
     row.parent == null &&
     <Table.Tr key={row.id}>
       <Table.Td>{row.id}</Table.Td>
@@ -118,13 +118,17 @@ export function TableSort() {
         <div className={classes.wrppaerInputAndBtn}>
           <TextInput
             placeholder="Categorya boyicha qidiru"
+            type='text'
             mb="md"
             w={600}
             leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
             value={search}
           />
           <Link to="/newCategories">
-            <Button className={classes.addNewCategory} color='#6EB648'> <MaterialSymbolsAddRounded fontWeight={700} fontSize={22} /> Yangi Categorya qoshish </Button>
+            <Button className={classes.addNewCategory} color='#6EB648'> 
+            <MaterialSymbolsAddRounded fontWeight={700} fontSize={22} /> 
+            <Text fw={'normal'}>Yangi Categorya qoshish</Text>
+            </Button>
           </Link>
 
         </div>
@@ -139,17 +143,15 @@ export function TableSort() {
               <Th>Ochirish</Th>
             </Table.Tr>
           </Table.Tbody>
-          <Table.Tbody>
+          <Table.Tbody className={classes.wrapperNotFount}>
             {rows && rows.length > 0 ? (
               rows
             ) : (
-              <Table.Tr>
-                <Table.Td>
-                  <Text fw={500} ta="center">
-                    <img src="../../../public/no-results.png" alt="" className={classes.iconNotFount} />
-                  </Text>
-                </Table.Td>
-              </Table.Tr>
+              
+                  // <div  className={classes.wrapperNotFount}>
+                    <img src="../../../public/404 Error-rafiki 1.png" alt="" className={classes.iconNotFount} />
+                  // </div>
+               
             )}
           </Table.Tbody>
         </Table>
