@@ -31,7 +31,6 @@ const mockdata = [
 
 export function NavbarNested() {
   const {pathname} = useLocation()
-  console.log(pathname);
   
 
   const links = mockdata.map((item) => (
