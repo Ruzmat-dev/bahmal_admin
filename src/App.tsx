@@ -11,6 +11,11 @@ import Categories from './pages/Catalog'
 import Achievements from './components/Achievements'
 import Galleries from './components/Galleries'
 import Blog from './components/Blog'
+import News from './components/News'
+import Products from './components/Products'
+import Services from './components/Services'
+import Grup from './components/Grup'
+import Users from './components/Users'
 
 
 
@@ -37,6 +42,16 @@ const App = () => {
             <Route path={"/galleries"} element={<Layout login={login}><Galleries/></Layout>} />
             {/* Blog */}
             <Route path={"/blog"} element={<Layout login={login}><Blog/></Layout>} />
+            {/* News */}
+            <Route path={"/news"} element={<Layout login={login}><News/></Layout>} />
+            {/* Products */}
+            <Route path={"/products"} element={<Layout login={login}><Products/></Layout>} />
+            {/* Services */}
+            <Route path={"/services"} element={<Layout login={login}><Services/></Layout>} />
+            {/* Grup */}
+            <Route path={"/grup"} element={<Layout login={login}><Grup/></Layout>} />
+            {/* Users */}
+            <Route path={"/users"} element={<Layout login={login}><Users/></Layout>} />
           </Routes>
         </BrowserRouter>
     </div>

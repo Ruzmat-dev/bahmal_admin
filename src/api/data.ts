@@ -11,6 +11,15 @@ export const getCategories = async() => {
     }
 }
 
+export const getCategoryById = async(id: string) => {
+    try { 
+        const res = await axiosPublic("uz").get<TCategory>(`/categories/${id}/`)
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const getAchievements = async() => {
     try { 
         const res = await axiosPublic("uz").get<TAchievement[]>(`/achievements/`)

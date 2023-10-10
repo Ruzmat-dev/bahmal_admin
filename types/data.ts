@@ -9,7 +9,7 @@ export interface TCategory {
     description: string;
     image: string;
     parent: null;
-  };
+  } | null;
 }
 
 export interface TAchievement {
@@ -120,6 +120,6 @@ export type TPostCategory = {
   description_ru?: string
   description_uz?: string
   description_en?: string
-  image?: File
+  image?: File | string
   parent?: null
 }

@@ -1,244 +1,189 @@
-import { useForm } from 'react-hook-form';
+import { useCallback, useEffect, useRef, useState } from "react"
 import classes from "./edit.module.css"
-import { useState, useEffect } from 'react';
-import { axiosPrivate } from '../../../api/axiosPrivate';
-import { TextInput, Button, Text, Loader } from '@mantine/core';
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
-import { useParams } from 'react-router-dom';
-import { axiosPublic } from '../../../api/axiosPublic';
-import { IdCategory, TPostCategory } from '../../../../types/data';
-import toast, { Toaster } from 'react-hot-toast';
-import { AxiosError } from 'axios';
+import { TextInput, Button, Text, Textarea } from '@mantine/core';
+import { Toaster } from 'react-hot-toast';
+import MaterialSymbolsArrowBackRounded from '../../icons/MaterialSymbolsArrowBackRounded';
+import MaterialSymbolsDownload from '../../icons/MaterialSymbolsDownload';
+import TwemojiFlagUzbekistan from '../../icons/TwemojiFlagUzbekistan';
+import TwemojiFlagRussia from '../../icons/TwemojiFlagRussia';
+import FxemojiGreatbritainflag from '../../icons/FxemojiGreatbritainflag';
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import { getCategoryById } from "../../../api/data";
+import { convertImageToFileURL } from "../../../utils/helpers";
+import { axiosPrivate } from "../../../api/axiosPrivate";
+
 type FormData = {
-  title?: string;
-  title_ru?: string;
   title_uz?: string;
+  title_ru?: string;
   title_en?: string;
-  description?: string;
-  description_ru?: string;
-  description_en?: string;
   description_uz?: string;
+  description_ru?: string;
+  description_en?: string
+  image?: File
 };
-const schema = yup
-  .object({
-    title: yup.string(),
-    title_ru: yup.string(),
-    title_uz: yup.string(),
-    title_en: yup.string(),
-    description: yup.string(),
-    description_ru: yup.string(),
-    description_en: yup.string(),
-    description_uz: yup.string(),
-  })
-  .required()
 
 export default function CategoriesEdit() {
+  const fileRef = useRef<HTMLInputElement | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [parentName, setParentName] = useState<string |undefined | null>('')
+  const [imageUrl, setImageUrl] = useState<string>("")
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewURL,] = useState<string>('');
-  // const [titleProduct , setTitleProduct] = useState<string>('');
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const [postData, setPostData] = useState<TPostCategory>({
-    title: "" ,
-  title_uz: "" ,
-  title_ru: "" ,
-  title_en: "" ,
-  description: "" ,
-  description_ru: "" ,
-  description_uz: "" ,
-  description_en: "" ,
-  })
-
-  // const [product, setProduct] = useState<TChangeCategory>({
-  //   id: null,
-  //   description: "",
-  //   image: null,
-  //   parent: null,
-  //   title: ""
-  // })
+  const { register, setValue, handleSubmit } = useForm<FormData>({})
   const { id } = useParams()
 
-  const getCategoryId = async () => {
-    try {
-      const uz = await axiosPublic("uz").get<IdCategory>(`/categories/${id}/`);
-      const ru = await axiosPublic("ru").get<IdCategory>(`/categories/${id}/`); 
-      const en = await axiosPublic("en").get<IdCategory>(`/categories/${id}/`);
-      setPostData({...postData, title: uz.data.title , title_uz: uz.data.title , title_en: en.data.title , title_ru: ru.data.title , description: uz.data.description , description_uz: uz.data.description , description_ru: ru.data.description , description_en: en.data.description , parent: uz.data.parent})
-    } catch (error) {
-      console.log(error);
+  const handleFetchData = useCallback(async () => {
+    if (id) {
+      const [res_uz, res_ru, res_en] = await Promise.all([getCategoryById(id), getCategoryById(id), getCategoryById(id)])
+      if (res_en && res_uz && res_ru) {
+        setValue("title_uz", res_uz.data.title)
+        setValue("title_ru", res_ru.data.title)
+        setValue("title_en", res_en.data.title)
+        setValue("description_uz", res_uz.data.description)
+        setValue("description_ru", res_ru.data.description)
+        setValue("description_en", res_en.data.description)
+        setImageUrl(res_en.data.image)
+        setParentName(res_uz.data.title) 
+      }
     }
-  }
-
-  // const updateData = async () => {
-  //   try {
-  //     await axiosPrivate.put<TChangeCategory>(`/categories/${id}/`, postData);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  
+    console.log(1);
+  }, [id, setValue])
 
   useEffect(() => {
-    getCategoryId()
-  }, [])
+    handleFetchData()
+  }, [handleFetchData])
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: yupResolver(schema)
-  });
 
-  const onSubmit = async () => {
-    console.log(postData);
-    
-    setIsSubmitting(true);
-    const new_data = {...postData, image: selectedFile}
-
-    console.log(new_data);
-    
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    setLoading(true)
     try {
-      await axiosPrivate.patch(`/categories/${id}/`, new_data, {
+      await axiosPrivate.patch(`/categories/${id}/`, data, {
         headers: {
-          'Content-Type': 'multipart/form-data', // Set content type to form data
-        },
-      });
-      toast.success('Movafiqiyatli Qoshildi!')
-      setIsSubmitting(false);
+          "Content-Type": "multipart/form-data"
+        }
+      })
+      setLoading(false)
     } catch (error) {
-      const axiosError = error as AxiosError;
-
-      const myError = axiosError.request?.status ?? 0;
-      const errorNumber = Math.floor(myError / 100);
-
-      if (errorNumber === 4) {
-        toast.error('Xato malumot kiritildi!');
-      } else if (errorNumber === 5) {
-        toast.error('Uzir hatoliq yuz berdi!');
-      } else {
-        toast.error('Internet aloqasi yo`q!');
-      }
-      setIsSubmitting(false);
+      console.log(error)
+      setLoading(false)
     }
   }
-
-  function handleOnChangeName(e: string) {
-    setPostData({ ...postData, title: e });
-  }
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
     if (files && files.length > 0) {
-      const file = files[0];
-      setSelectedFile(file);
-
-      console.log('Selected file:', file.name);
-    } else {
-      setSelectedFile(null);
+      setValue('image', files[0])
+      const url_image = await convertImageToFileURL(files[0])
+      if (typeof url_image === "string") {
+        setImageUrl(url_image)
+      }
     }
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.catalogAdd}>
-        <Text fz="28" fw={'bold'}>{postData?.title} </Text>
-      <TextInput
-        label="Title"
-        withAsterisk
-        placeholder="Input placeholder"
-        {...register("title", { min: 3, maxLength: 59 })}
-        error={errors.title?.message}
-        // defaultValue={postData?.title}
-        value={postData.title}
-        onChange={(e) => handleOnChangeName(e.target.value)}
-      />
-      <TextInput
-        label="Title uz"
-        withAsterisk
-        placeholder="Title uz"
-        {...register("title_uz", { required: true, min: 3, maxLength: 60 })}
-        error={errors.title_uz?.message}
-        defaultValue={postData?.title_uz}
-      />
-      <TextInput
-        label="Title ru"
-        withAsterisk
-        placeholder="Title ru"
-        {...register("title_ru", { required: true, min: 3, maxLength: 60 })}
-        error={errors.title_ru?.message}
-        defaultValue={postData?.title_ru}
-      />
-      <TextInput
-        label="Title en"
-        withAsterisk
-        placeholder="Title en"
-        {...register("title_en", { required: true, min: 3, maxLength: 60 })}
-        error={errors.title_ru?.message}
-        defaultValue={postData?.title_en}
-      />
-      <TextInput
-        label="Description"
-        withAsterisk
-        placeholder="Description"
-        {...register("description", { required: true, min: 3, maxLength: 60 })}
-        error={errors.description?.message}
-        defaultValue={postData?.description}
-      />
-      <TextInput
-        label="Description uz"
-        withAsterisk
-        placeholder="Description uz"
-        {...register("description_uz", { required: true, min: 3, maxLength: 60 })}
-        error={errors.description_uz?.message}
-        defaultValue={postData?.description_uz}
-      />
-      <TextInput
-        label="Description ru"
-        withAsterisk
-        placeholder="Description ru"
-        {...register("description_ru", { required: true, min: 3, maxLength: 60 })}
-        error={errors.description_ru?.message}
-        defaultValue={postData?.description_ru}
-      />
-      <TextInput
-        label="Description en"
-        withAsterisk
-        placeholder="Description en"
-        {...register("description_en", { required: true, min: 3, maxLength: 60 })}
-        error={errors.description_en?.message}
-        defaultValue={postData?.description_en}
-      />
-      <div className={classes.wrapperImages}>
-        {/* <TextInput
-        type="file" id="avatar"
-        error={errors.image?.message}
-        {...register("image", { required: true })} 
-      /> */}
-        {/* <Field label="Picture" error={errors.picture}> */}
-        <input
-          accept='image/*'
-          onChange={handleFileChange}
-          type="file"
-          id="picture"
-          // defaultValue={postData?.image}
-        />
-        {/* </Field> */}
-        {selectedFile && (
-          <img
-            src={previewURL}
-            alt="Preview"
-            style={{ maxWidth: '100%', maxHeight: '200px' }}
-          />
-        )}
+      <div className={classes.headerForm}>
+        <div className={classes.goBackBtn}>
+          <MaterialSymbolsArrowBackRounded fontSize={28} style={{ marginTop: "6px" }} />
+        </div>
+        <Text c="#6EB648" size='xl' fw={'initial'}> {parentName ?? "PARENT C"} </Text>
+        <div className={classes.imgWrapper} onClick={() => fileRef.current?.click()}>
+          <div className={classes.imgWrapperItem}>
+            <span>
+              <MaterialSymbolsDownload fontSize={56} color='#6EB648' />
+            </span>
+          </div>
+          <div className={classes.wrapperImages}>
+            <input
+              hidden
+              accept='image/*'
+              type="file"
+              ref={fileRef}
+              onChange={handleFileChange}
+              id="picture"
+            />
+            <img
+              src={imageUrl}
+              alt="Preview"
+            />
+          </div>
+        </div>
       </div>
-
-      {/* <input type="submit" /> */}
-      <Button disabled={isSubmitting} type='submit' color='#6EB648'>
-        {isSubmitting ? <Loader color='#6EB648' /> : 'Qoshish'}
+      <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+        <TextInput
+          label={
+            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span >Nomi</span> <TwemojiFlagUzbekistan fontSize={18} />
+            </span>
+          }
+          {...register("title_uz")}
+          style={{ flex: "1", height: "60px" }}
+          size='md'
+          h={70}
+          type='text'
+        />
+        <TextInput
+          label={
+            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span >Названия</span> <TwemojiFlagRussia fontSize={18} />
+            </span>
+          }
+          placeholder="Названия"
+          {...register("title_ru")}
+          style={{ flex: "1" }}
+          size='md'
+          type='text'
+        />
+        <TextInput
+          label={
+            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span >Title</span> <FxemojiGreatbritainflag fontSize={18} />
+            </span>
+          }
+          placeholder="Title"
+          {...register("title_en")}
+          style={{ flex: "1" }}
+          size='md'
+          type='text'
+        />
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+        <Textarea
+          label={
+            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span >Ma'lumot</span> <TwemojiFlagUzbekistan fontSize={18} />
+            </span>
+          }
+          placeholder="Ma'lumot"
+          {...register("description_uz")}
+          style={{ flex: "1" }}
+          size='md'
+        />
+        <Textarea
+          label={
+            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span >Информация</span> <TwemojiFlagRussia fontSize={18} />
+            </span>
+          }
+          placeholder="Информация"
+          {...register("description_ru")}
+          style={{ flex: "1" }}
+          size='md'
+        />
+        <Textarea
+          label={
+            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span >Description</span> <FxemojiGreatbritainflag fontSize={18} />
+            </span>
+          }
+          placeholder="Description"
+          {...register("description_en")}
+          style={{ flex: "1" }}
+          size='md'
+        />
+      </div>
+      <Button loading={loading} disabled={loading} type='submit' color='#6EB648' h={50} w={435} size='md'>
+        Qoshish
       </Button>
-
       <Toaster
         position="top-right"
         reverseOrder={false}

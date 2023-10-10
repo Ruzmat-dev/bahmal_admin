@@ -4,7 +4,6 @@ import MaterialSymbolsCategoryOutlineRounded from '../icons/MaterialSymbolsCateg
 import MaterialSymbolsHomeRepairServiceOutlineRounded from '../icons/MaterialSymbolsHomeRepairServiceOutlineRounded';
 import MaterialSymbolsTeamDashboardOutline from '../icons/MaterialSymbolsTeamDashboardOutline';
 import {
-  IconSwitchHorizontal,
   IconLogout,
 } from '@tabler/icons-react';
 import classes from './NavbarSimpleColored.module.css';
@@ -15,7 +14,8 @@ import CarbonBlog from '../icons/CarbonBlog';
 import IonNewspaperOutline from '../icons/IonNewspaperOutline';
 import MaterialSymbolsPerson from '../icons/MaterialSymbolsPerson';
 import SolarUsersGroupTwoRoundedOutline from '../icons/SolarUsersGroupTwoRoundedOutline';
-
+import { Button, Text } from '@mantine/core';
+import { modals } from '@mantine/modals';
 const mockdata = [
   { label: 'Dashbord', icon: MaterialSymbolsTeamDashboardOutline, link: "/dashbord" },
   { label: 'Categoryalar', icon: MaterialSymbolsCategoryOutlineRounded, link: "/categories" },
@@ -45,7 +45,18 @@ export function NavbarNested() {
     </Link>
   ));
 
-
+  const openModal = () => modals.openConfirmModal({
+    title: 'Please confirm your action',
+    children: (
+      <Text size="sm">
+        This action is so important that you are required to confirm it with a modal. Please click
+        one of these buttons to proceed.
+      </Text>
+    ),
+    labels: { confirm: 'Confirm', cancel: 'Cancel' },
+    onCancel: () => console.log('Cancel'),
+    onConfirm: () => console.log('Confirmed'),
+  });
 
 
 
@@ -55,17 +66,11 @@ export function NavbarNested() {
 
         {links}
       </div>
-
       <div className={classes.footer}>
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-          <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-          <span>Change account</span>
-        </a>
-
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
+        <Button className={classes.link} onClick={openModal}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>
-        </a>
+        </Button>
       </div>
     </nav>
   );
