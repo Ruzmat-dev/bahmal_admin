@@ -1,4 +1,4 @@
-import { TableSort } from "../components/Catalog"
+import { TableSort } from "../components/Categories"
 
 const Categories = () => {
   return (

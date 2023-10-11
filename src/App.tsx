@@ -3,19 +3,19 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Layout from "./components/Layout"
 import Dashboard from './pages/Dashboard'
 import Login from "./pages/Login"
-import CategoriesSee from './components/Catalog/See/index'
-import CategoriesEdit from './components/Catalog/Edit'
-import CategoriesAdd from './components/Catalog/Add'
-import NewCategories from './components/Catalog/newCatalog'
-import Categories from './pages/Catalog'
+import CategoriesSee from './components/Categories/See/index'
+import CategoriesEdit from './components/Categories/Edit'
+import CategoriesAdd from './components/Categories/Add'
+import NewCategories from './components/Categories/newCategories'
+import Categories from './pages/Categories'
 import Achievements from './pages/Achievements'
 import Galleries from './pages/Galleries'
-import Blog from './components/Blog'
-import News from './components/News'
-import Products from './components/Products'
-import Services from './components/Services'
-import Grup from './components/Grup'
-import Users from './components/Users'
+import News from './pages/News'
+import Products from './pages/Products'
+import Services from './pages/Services'
+import Grup from './pages/Grups'
+import Users from './pages/Users'
+import Blogs from './pages/Blogs'
 
 
 
@@ -41,7 +41,7 @@ const App = () => {
             {/* Galleries */}
             <Route path={"/galleries"} element={<Layout login={login}><Galleries/></Layout>} />
             {/* Blog */}
-            <Route path={"/blog"} element={<Layout login={login}><Blog/></Layout>} />
+            <Route path={"/blog"} element={<Layout login={login}><Blogs/></Layout>} />
             {/* News */}
             <Route path={"/news"} element={<Layout login={login}><News/></Layout>} />
             {/* Products */}

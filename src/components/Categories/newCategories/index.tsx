@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import classes from "./newCatalog.module.css"
+import classes from "./newCategories.module.css"
 import { useRef, useState } from 'react';
 import { axiosPrivate } from '../../../api/axiosPrivate';
 import { TextInput, Button, Loader, Textarea, Text } from '@mantine/core';

@@ -1,8 +1,8 @@
 
-const Users = () => {
+const UsersItem = () => {
   return (
     <div>Users</div>
   )
 }
 
-export default Users
+export default UsersItem
