@@ -2,10 +2,8 @@ import { useEffect, useState } from "react"
 import { Card, Text, Box } from '@mantine/core';
 import classes from "./dashbord.module.css"
 import { getAchievements, getBlogs, getCategories, getGalleries, getNews, getProducts, getStatistics } from '../../api/data';
-import { TCategory, TAchievement, TBlogs, TGalleries, ProductResponse, TStatistics } from "../../../types/data";
 import CountUp from 'react-countup';
 import { Link } from "react-router-dom";
-import MaterialSymbolsAddRounded from "../icons/MaterialSymbolsAddRounded";
 import MaterialSymbolsGalleryThumbnailOutlineRounded from "../icons/MaterialSymbolsGalleryThumbnailOutlineRounded";
 import MaterialSymbolsCategoryOutlineRounded from "../icons/MaterialSymbolsCategoryOutlineRounded";
 import GameIconsAchievement from "../icons/GameIconsAchievement";
@@ -27,23 +25,9 @@ const DashbordPage = () => {
     products?: number;
     statistics?: number
   }>({})
-  // const [category, setCategory] = useState<TCategory[] | undefined>([]);
-  // const [achievement, setAchievement] = useState<TAchievement[] | undefined>([]);
-  // const [blog, setBlog] = useState<TBlogs[] | undefined>([]);
-  // const [galleri, setGalleri] = useState<TGalleries[] | undefined>([]);
-  // const [news, setNews] = useState<TBlogs[] | undefined>([]);
-  // const [product, setProduct] = useState<ProductResponse[] | undefined>([]);
-  // const [statistic, setStatistic] = useState<TStatistics[] | undefined>([]);
 
   const fetchData = async () => {
     try {
-      // const categorys = await getCategories()
-      // const achievements = await getAchievements()
-      // const blogs = await getBlogs()
-      // const galleries = await getGalleries()
-      // const newss = await getNews()
-      // const products = await getProducts()
-      // const statistics = await getStatistics()
 
       const [ cats, achievements, blogs, galleries, news, products, statistics] = await Promise.all([getCategories(), getAchievements(), getBlogs(), getGalleries(), getNews(), getProducts(), getStatistics()])
       setStats({
@@ -90,7 +74,7 @@ const DashbordPage = () => {
       <Card shadow="sm" padding="lg" className={classes.dashbord_card} style={{backgroundImage: e.color}} radius="md" withBorder>
         <div>
           <Text className={classes.dashbord_number}>
-            <CountUp end={e.count} delay={80} />
+            <CountUp end={e.count ? e.count : 0} delay={80} />
           </Text>
           <Text className={classes.dashbord_title}>
             {e.label}

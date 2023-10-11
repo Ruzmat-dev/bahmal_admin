@@ -13,7 +13,7 @@ import { TAchievement } from '../../../../types/data';
 import MaterialSymbolsDownload from '../../icons/MaterialSymbolsDownload';
 import { AxiosError } from 'axios';
 import { convertImageToFileURL } from '../../../utils/helpers';
-
+import "./style.css"
 
 
 
@@ -21,7 +21,7 @@ export default function AchievementsTable() {
     const [achievements, setAchievements] = useState<TAchievement[]>()
     const [previewURL, setPreviewImage] = useState<File>();
     // const [selectedFile, setSelectedFile] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(false)
+    const [, setLoading] = useState<boolean>(false)
     const [imageUrl, setImageUrl] = useState<string>("")
 
     const fileRef = useRef<HTMLInputElement | null>(null)
@@ -102,7 +102,7 @@ export default function AchievementsTable() {
                             id="picture"
                         />
 
-                        <img
+                        <img    
                             src={imageUrl ? imageUrl : e.image}
                             alt="Preview"
                         />
@@ -113,9 +113,9 @@ export default function AchievementsTable() {
             </>
         ),
         labels: { confirm: 'Confirm', cancel: 'Cancel' },
+
         onCancel: () => console.log('Cancel'),
         onConfirm: () => postAchievements(e.id),
-        // groupProps: () =>  
     });
 
     const postAchievements = async (id: number) => {
@@ -205,3 +205,4 @@ export default function AchievementsTable() {
         </div>
     );
 }
+
