@@ -13,6 +13,8 @@ import { convertImageToFileURL } from "../../../utils/helpers";
 import { axiosPrivate } from "../../../api/axiosPrivate";
 import { AxiosError } from "axios";
 import toast, { Toaster } from 'react-hot-toast';
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
 
 type FormData = {
   title_uz?: string;
@@ -24,12 +26,24 @@ type FormData = {
   image?: File
 };
 
+const schema = yup
+  .object({
+    title_ru: yup.string().min(3, "iltimos bu hatorni toldirig"),
+    title_uz: yup.string().min(3, "iltimos bu hatorni toldirig"),
+    title_en: yup.string().min(3, "iltimos bu hatorni toldirig"),
+    description: yup.string().min(3, "iltimos bu hatorni toldirig"),
+    description_ru: yup.string().min(3, "iltimos bu hatorni toldirig"),
+    description_en: yup.string().min(3, "iltimos bu hatorni toldirig"),
+    description_uz: yup.string().min(3, "iltimos bu hatorni toldirig"),
+  })
+  .required("iltimos  ")
+
 export default function CategoriesEdit() {
   const fileRef = useRef<HTMLInputElement | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [parentName, setParentName] = useState<string | undefined | null>('')
   const [imageUrl, setImageUrl] = useState<string>("")
-  const { register, setValue, handleSubmit } = useForm<FormData>({})
+  const { register, setValue, handleSubmit , formState: { errors } } = useForm<FormData>({resolver: yupResolver(schema)})
   
   const { id } = useParams()
 
@@ -53,6 +67,8 @@ export default function CategoriesEdit() {
     handleFetchData()
   }, [handleFetchData])
   const navigate = useNavigate();
+
+
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
@@ -132,6 +148,7 @@ export default function CategoriesEdit() {
             </span>
           }
           {...register("title_uz")}
+          error={errors.title_uz?.message}
           style={{ flex: "1", height: "60px" }}
           size='md'
           h={70}
@@ -145,6 +162,7 @@ export default function CategoriesEdit() {
           }
           placeholder="Названия"
           {...register("title_ru")}
+          error={errors.title_ru?.message}
           style={{ flex: "1" }}
           size='md'
           type='text'
@@ -157,6 +175,7 @@ export default function CategoriesEdit() {
           }
           placeholder="Title"
           {...register("title_en")}
+          error={errors.title_en?.message}
           style={{ flex: "1" }}
           size='md'
           type='text'
@@ -171,6 +190,7 @@ export default function CategoriesEdit() {
           }
           placeholder="Ma'lumot"
           {...register("description_uz")}
+          error={errors.description_uz?.message}
           style={{ flex: "1" }}
           size='md'
         />
@@ -182,6 +202,7 @@ export default function CategoriesEdit() {
           }
           placeholder="Информация"
           {...register("description_ru")}
+          error={errors.description_ru?.message}
           style={{ flex: "1" }}
           size='md'
         />
@@ -193,6 +214,7 @@ export default function CategoriesEdit() {
           }
           placeholder="Description"
           {...register("description_en")}
+          error={errors.title_en?.message}
           style={{ flex: "1" }}
           size='md'
         />

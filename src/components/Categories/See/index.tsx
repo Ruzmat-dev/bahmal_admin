@@ -46,7 +46,6 @@ function shortenText(text: string, maxLength: number) {
 export default function CategoriesSee() {
     const [search,] = useState('');
     const [category, setCategory] = useState<TCategory[] | undefined>([]);
-    // const [parent , setParent] = useState<number>(null)
       const handleDelete = async (id: number) => {
         try {
          await axiosPrivate.delete(`/categories/${id}/`)
@@ -64,15 +63,10 @@ export default function CategoriesSee() {
             const res = await getCategories()
             const subs = res ? res.data.filter((item) => item?.id === Number(id)) : []
             setCategory(subs)
-            // console.log(subs);
         } catch (error) {
             console.log(error);
         }
     }
-
-
-
-
 
     useEffect(() => {
         fetchData()
@@ -108,7 +102,6 @@ export default function CategoriesSee() {
                 </Link>
             </Table.Td>
             <Table.Td>
-                {/* ochir */}
                 <MaterialSymbolsDeleteOutlineRounded fontSize={22} color='red' cursor="pointer" onClick={() => openDeleteModal(row)} />
             </Table.Td>
         </Table.Tr>

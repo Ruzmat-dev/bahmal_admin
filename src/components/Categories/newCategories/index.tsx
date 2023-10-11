@@ -127,7 +127,6 @@ export default function NewCategories() {
               src={previewURL}
               alt="Preview"
             />
-
           </div>
         </div>
       </div>
@@ -231,9 +230,6 @@ export default function NewCategories() {
 
         />
       </div>
-
-
-
       <Button disabled={isSubmitting} type='submit' color='#6EB648' h={50} w={435} size='md'>
         <Text >
           {isSubmitting ? <Loader color='#6EB648' /> : 'Qoshish'}

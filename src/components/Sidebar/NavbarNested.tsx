@@ -45,17 +45,22 @@ export function NavbarNested() {
     </Link>
   ));
 
+    const removInLocalstorage = () => {
+      localStorage.removeItem('access')
+      localStorage.removeItem('refresh')
+      window.location.reload();
+    }
+
   const openModal = () => modals.openConfirmModal({
     title: 'Please confirm your action',
+    centered: true,
     children: (
       <Text size="sm">
-        This action is so important that you are required to confirm it with a modal. Please click
-        one of these buttons to proceed.
+        Siz xaqiqatan ham chiqmoqchimisiz 
       </Text>
     ),
-    labels: { confirm: 'Confirm', cancel: 'Cancel' },
-    onCancel: () => console.log('Cancel'),
-    onConfirm: () => console.log('Confirmed'),
+    labels: { confirm: 'Chiqish', cancel: 'Orqaga' },
+    onConfirm: () => removInLocalstorage(),
   });
 
 
@@ -67,8 +72,8 @@ export function NavbarNested() {
         {links}
       </div>
       <div className={classes.footer}>
-        <Button className={classes.link} onClick={openModal}>
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
+        <Button className={classes.footerLink} onClick={openModal}>
+          <IconLogout className={classes.footerLinkIcon} stroke={1.5} />
           <span>Logout</span>
         </Button>
       </div>

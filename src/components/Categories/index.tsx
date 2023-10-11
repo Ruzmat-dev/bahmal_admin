@@ -44,7 +44,6 @@ function shortenText(text: string, maxLength: number) {
 
 export function TableSort() {
   const [category, setCategory] = useState<TCategory[] | undefined>([]);
-  // const [inptValue, setInputValue] = useState<string>('')
 
   const handleDelete = async (id: number) => {
     try {
@@ -61,31 +60,11 @@ export function TableSort() {
   const fetchData = async () => {
     try {
       const res = await getCategories()
-      // if (res) {
-      //   const parentCategories = res.data.filter((item) => item.parent === null)
         setCategory(res?.data)
-      // }
-
     } catch (error) {
       console.log(error);
     }
   }
-
-  
-  // const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const newSearchTerm = e.target.value;
-  //   setInputValue(newSearchTerm);
-  //   filterData(newSearchTerm);
-  // };
-
-  // const filterData = (term: string) => {
-  //   const filtered = category.filter((item) => {
-  //     return item.title.toLowerCase().includes(term.toLowerCase());
-  //   });
-
-  //   setCategory(filtered);
-  // };
-
 
   useEffect(() => {
     fetchData()
@@ -128,16 +107,13 @@ export function TableSort() {
 
   return (
     <div className={classes.catalog}>
-      {/* <ScrollArea> */}
         <div className={classes.wrppaerInputAndBtn}>
           <TextInput
             placeholder="Categorya boyicha qidiru"
             type='text'
             mb="md"
             w={600}
-            // value={inptValue}
             leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
-            // onChange={handleInputChange}
           />
           <Link to="/newCategories">
             <Button className={classes.addNewCategory} color='#6EB648'>
@@ -153,14 +129,12 @@ export function TableSort() {
               <Th>Id</Th>
               <Th>Title</Th>
               <Th>Korish</Th>
-              {/* <Th>Qoshish</Th> */}
               <Th>Tahrirlash</Th>
               <Th>Ochirish</Th>
             </Table.Tr>
             </Table.Thead>
             <Table.Tbody>  {rows} </Table.Tbody>
         </Table>
-      {/* </ScrollArea> */}
       <Toaster
         position="top-right"
         reverseOrder={false}
