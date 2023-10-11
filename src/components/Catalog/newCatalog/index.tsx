@@ -102,11 +102,11 @@ export default function NewCategories() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.catalogAdd}>
-      <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" , alignSelf: "center" }}>
+      <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", alignSelf: "center" }}>
         <div className={classes.goBackBtn} onClick={() => navigate(-1)}>
-          <MaterialSymbolsArrowBackRounded fontSize={28}  style={{marginTop: "6px"}}/>
+          <MaterialSymbolsArrowBackRounded fontSize={28} style={{ marginTop: "6px" }} />
         </div>
-          <Text c="#6EB648" size='xl' fw={'initial'}> Yangi Categorya qo`shish </Text>
+        <Text c="#6EB648" size='xl' fw={'initial'}> Yangi Categorya qo`shish </Text>
         <div className={classes.imgWrapper}>
           <div className={classes.imgWrapperItem} onClick={() => fileRef.current?.click()}>
             <span>
@@ -116,7 +116,7 @@ export default function NewCategories() {
           <div className={classes.wrapperImages}>
             <input
               hidden
-              ref={fileRef}
+              ref={fileRef} 
               accept='image/*'
               onChange={handleFileChange}
               type="file"
@@ -232,7 +232,7 @@ export default function NewCategories() {
         />
       </div>
 
-      
+
 
       <Button disabled={isSubmitting} type='submit' color='#6EB648' h={50} w={435} size='md'>
         <Text >

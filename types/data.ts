@@ -3,13 +3,6 @@ export interface TCategory {
   title: string;
   description: string;
   image: string;
-  parent: {
-    id: number;
-    title: string;
-    description: string;
-    image: string;
-    parent: null;
-  } | null;
 }
 
 export interface TAchievement {
@@ -122,4 +115,9 @@ export type TPostCategory = {
   description_en?: string
   image?: File | string
   parent?: null
+}
+
+export type TAchievements = {
+  id: number;
+  image: string;
 }

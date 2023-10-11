@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import classes from "./edit.module.css"
 import { TextInput, Button, Text, Textarea } from '@mantine/core';
-import { Toaster } from 'react-hot-toast';
 import MaterialSymbolsArrowBackRounded from '../../icons/MaterialSymbolsArrowBackRounded';
 import MaterialSymbolsDownload from '../../icons/MaterialSymbolsDownload';
 import TwemojiFlagUzbekistan from '../../icons/TwemojiFlagUzbekistan';
 import TwemojiFlagRussia from '../../icons/TwemojiFlagRussia';
 import FxemojiGreatbritainflag from '../../icons/FxemojiGreatbritainflag';
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getCategoryById } from "../../../api/data";
 import { convertImageToFileURL } from "../../../utils/helpers";
 import { axiosPrivate } from "../../../api/axiosPrivate";
+import { AxiosError } from "axios";
+import toast, { Toaster } from 'react-hot-toast';
 
 type FormData = {
   title_uz?: string;
@@ -19,17 +20,17 @@ type FormData = {
   title_en?: string;
   description_uz?: string;
   description_ru?: string;
-  description_en?: string
+  description_en?: string;
   image?: File
 };
 
 export default function CategoriesEdit() {
   const fileRef = useRef<HTMLInputElement | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
-  const [parentName, setParentName] = useState<string |undefined | null>('')
+  const [parentName, setParentName] = useState<string | undefined | null>('')
   const [imageUrl, setImageUrl] = useState<string>("")
-
   const { register, setValue, handleSubmit } = useForm<FormData>({})
+  
   const { id } = useParams()
 
   const handleFetchData = useCallback(async () => {
@@ -43,16 +44,15 @@ export default function CategoriesEdit() {
         setValue("description_ru", res_ru.data.description)
         setValue("description_en", res_en.data.description)
         setImageUrl(res_en.data.image)
-        setParentName(res_uz.data.title) 
+        setParentName(res_uz.data.title)
       }
     }
-    console.log(1);
   }, [id, setValue])
 
   useEffect(() => {
     handleFetchData()
   }, [handleFetchData])
-
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setLoading(true)
@@ -63,8 +63,22 @@ export default function CategoriesEdit() {
         }
       })
       setLoading(false)
+      toast.success('Movafiqiyatli Qoshildi!')
+      navigate(-1)
     } catch (error) {
-      console.log(error)
+      const axiosError = error as AxiosError;
+      console.log(error);
+
+      const myError = axiosError.request?.status ?? 0;
+      const errorNumber = Math.floor(myError / 100);
+
+      if (errorNumber === 4) {
+        toast.error('Xato malumot kiritildi!');
+      } else if (errorNumber === 5) {
+        toast.error('Uzir hatoliq yuz berdi!');
+      } else {
+        toast.error('Internet aloqasi yo`q!');
+      }
       setLoading(false)
     }
   }
@@ -82,8 +96,10 @@ export default function CategoriesEdit() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.catalogAdd}>
       <div className={classes.headerForm}>
-        <div className={classes.goBackBtn}>
-          <MaterialSymbolsArrowBackRounded fontSize={28} style={{ marginTop: "6px" }} />
+        <div className={classes.goBackBtn} onClick={() => navigate(-1)}>
+          <Button size="md" leftSection={<MaterialSymbolsArrowBackRounded />} bg="#6EB648" className={classes.goBackBtn}>
+            Chiqish
+          </Button>
         </div>
         <Text c="#6EB648" size='xl' fw={'initial'}> {parentName ?? "PARENT C"} </Text>
         <div className={classes.imgWrapper} onClick={() => fileRef.current?.click()}>
@@ -181,7 +197,7 @@ export default function CategoriesEdit() {
           size='md'
         />
       </div>
-      <Button loading={loading} disabled={loading} type='submit' color='#6EB648' h={50} w={435} size='md'>
+      <Button loading={loading} disabled={loading} type='submit' color='#6EB648' h={50} w={435} size='md' className={classes.goBackBtn}>
         Qoshish
       </Button>
       <Toaster

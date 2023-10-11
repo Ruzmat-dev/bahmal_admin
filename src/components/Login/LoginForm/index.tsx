@@ -25,6 +25,7 @@ export default function LoginForm() {
   const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false)
   // "username": "admin",
   // "password": "CdREc5Bl5tiie32"
 
@@ -32,7 +33,7 @@ export default function LoginForm() {
   const passwordRef = useRef<HTMLInputElement | null>(null)
 
   const handleSubmit = async () => {
-
+    setLoading(true)
     setIsSubmitting(true);
     try {
       const res = await axiosPrivate.post("/accounts/login/", {
@@ -44,6 +45,7 @@ export default function LoginForm() {
       localStorage.setItem("refresh", res.data.refresh)
       setIsSubmitting(false);
       window.location.reload()
+      setLoading(false)
     } catch (error) {
       const axiosError = error as AxiosError;
 
@@ -74,6 +76,7 @@ export default function LoginForm() {
       if (responseData.password?.length === 1) {
         return passwordRef.current?.focus();
       }
+      setLoading(false)
     }
   }
 
@@ -88,7 +91,7 @@ export default function LoginForm() {
         <PasswordInput label="Password" type='password' placeholder="Your password" required ref={passwordRef} mt="md" onChange={(e) => setPassword(e.target.value)} />
         <Group justify="space-between" mt="lg">
         </Group>
-        <Button onClick={handleSubmit} fullWidth mt="xl" disabled={isSubmitting} color='#6EB648'>
+        <Button loading={loading} disabled={loading} onClick={handleSubmit} fullWidth mt="xl"  color='#6EB648'>
           {isSubmitting ? <Loader color='#6EB648'/> : 'Sign in'}
         </Button>
       </Paper>

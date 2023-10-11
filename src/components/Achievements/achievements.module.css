@@ -1,3 +1,6 @@
+.achievements {
+    padding: 50px;
+}
 .headerForm {
     width: 100%;
     display: flex;
@@ -36,11 +39,18 @@
     flex-direction: column;
     justify-content: space-between;
 }
-
+.wrapperDonlowd {
+    width: 100%;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+}
 .imgWrapper {
     position: relative;
-    height: 170px;
-    width: 250px;
+    width: 300px;
 }
 
 .imgWrapperItem {
@@ -54,13 +64,18 @@
     opacity: 0.5;
 }
 
+.send {
+    width: 150px;
+    margin-top: 15px;
+}
+
 .imgWrapperItem:hover {
     opacity: 1;
 }
 
 .wrapperImages > img{
     width: 100%;
-    height: 150px;
+    height: 300px;
     border-radius: 8px;
 }
 
