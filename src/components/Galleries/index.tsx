@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react"
-import { getAchievements } from "../../api/data"
+import { getGalleries } from "../../api/data"
 import AchievementsTable from "./Table"
 import classes from "./galleries.module.css"
 import { Button, Text, Modal } from '@mantine/core'
@@ -18,16 +18,14 @@ const Galleries = () => {
 
   const fileRef = useRef<HTMLInputElement | null>(null)
 
-  const fetchDataAchievements = async () => {
-    const res = await getAchievements()
+  const fetchDataGalleries = async () => {
+    const res = await getGalleries()
     console.log(res)
   }
 
-  console.log(selectedFile);
-
 
   useEffect(() => {
-    fetchDataAchievements()
+    fetchDataGalleries()
   }, [])
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,13 +42,23 @@ const Galleries = () => {
     }
   };
 
-  const postAchievements = async () => {
-    setLoading(true)
-    try {
-      await axiosPrivate.post('/categories/', selectedFile)
+  const postGalleries = async () => {
+    setLoading(true);
 
-      toast.success('Movafiqiyatli Qoshildi!')
-      setLoading(false)
+  try {
+    const formData = new FormData();
+    formData.append('image', selectedFile!); 
+
+    await axiosPrivate.post('/galleries/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    toast.success('Movafiqiyatli Qoshildi!');
+    setLoading(false);
+    fetchDataGalleries()
+    close()
     } catch (error) {
       const axiosError = error as AxiosError;
       console.log(error);
@@ -66,6 +74,7 @@ const Galleries = () => {
         toast.error('Internet aloqasi yo`q!');
       }
       setLoading(false)
+      close()
     }
   }
 
@@ -103,7 +112,7 @@ const Galleries = () => {
 
               </div>
             </div>
-            <Button loading={loading} disabled={loading} className={classes.send} bg="#6EB648" onClick={postAchievements}> Yuborish </Button>
+            <Button loading={loading} disabled={loading} className={classes.send} bg="#6EB648"  onClick={postGalleries}> Yuborish </Button>
           </Modal.Body>
         </Modal.Content>
       </Modal.Root>

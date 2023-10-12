@@ -45,7 +45,7 @@ export type  TChangeCategory = {
 
 export interface TGalleries  {
   id : number ;
-  image :  null | File;
+  image :  string;
 }
 
 interface Product {
