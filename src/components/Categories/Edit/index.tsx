@@ -28,28 +28,28 @@ type FormData = {
 
 const schema = yup
   .object({
-    title_ru: yup.string().min(3, "iltimos bu hatorni toldirig"),
-    title_uz: yup.string().min(3, "iltimos bu hatorni toldirig"),
-    title_en: yup.string().min(3, "iltimos bu hatorni toldirig"),
-    description: yup.string().min(3, "iltimos bu hatorni toldirig"),
-    description_ru: yup.string().min(3, "iltimos bu hatorni toldirig"),
-    description_en: yup.string().min(3, "iltimos bu hatorni toldirig"),
-    description_uz: yup.string().min(3, "iltimos bu hatorni toldirig"),
+    title_ru: yup.string(),
+    title_uz: yup.string(),
+    title_en: yup.string(),
+    description: yup.string(),
+    description_ru: yup.string(),
+    description_en: yup.string(),
+    description_uz: yup.string(), 
   })
-  .required("iltimos  ")
+  .required()
 
 export default function CategoriesEdit() {
   const fileRef = useRef<HTMLInputElement | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [parentName, setParentName] = useState<string | undefined | null>('')
   const [imageUrl, setImageUrl] = useState<string>("")
-  const { register, setValue, handleSubmit , formState: { errors } } = useForm<FormData>({resolver: yupResolver(schema)})
+  const { register, setValue, handleSubmit  } = useForm<FormData>({resolver: yupResolver(schema)})
   
   const { id } = useParams()
 
   const handleFetchData = useCallback(async () => {
     if (id) {
-      const [res_uz, res_ru, res_en] = await Promise.all([getCategoryById(id), getCategoryById(id), getCategoryById(id)])
+      const [res_uz, res_ru, res_en] = await Promise.all([getCategoryById(id, "uz"), getCategoryById(id , "ru"), getCategoryById(id , "en")])
       if (res_en && res_uz && res_ru) {
         setValue("title_uz", res_uz.data.title)
         setValue("title_ru", res_ru.data.title)
@@ -148,7 +148,6 @@ export default function CategoriesEdit() {
             </span>
           }
           {...register("title_uz")}
-          error={errors.title_uz?.message}
           style={{ flex: "1", height: "60px" }}
           size='md'
           h={70}
@@ -162,7 +161,6 @@ export default function CategoriesEdit() {
           }
           placeholder="Названия"
           {...register("title_ru")}
-          error={errors.title_ru?.message}
           style={{ flex: "1" }}
           size='md'
           type='text'
@@ -175,7 +173,6 @@ export default function CategoriesEdit() {
           }
           placeholder="Title"
           {...register("title_en")}
-          error={errors.title_en?.message}
           style={{ flex: "1" }}
           size='md'
           type='text'
@@ -190,7 +187,6 @@ export default function CategoriesEdit() {
           }
           placeholder="Ma'lumot"
           {...register("description_uz")}
-          error={errors.description_uz?.message}
           style={{ flex: "1" }}
           size='md'
         />
@@ -202,7 +198,6 @@ export default function CategoriesEdit() {
           }
           placeholder="Информация"
           {...register("description_ru")}
-          error={errors.description_ru?.message}
           style={{ flex: "1" }}
           size='md'
         />
@@ -214,7 +209,6 @@ export default function CategoriesEdit() {
           }
           placeholder="Description"
           {...register("description_en")}
-          error={errors.title_en?.message}
           style={{ flex: "1" }}
           size='md'
         />

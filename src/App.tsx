@@ -13,7 +13,7 @@ import Galleries from './pages/Galleries'
 import News from './pages/News'
 import Products from './pages/Products'
 import Services from './pages/Services'
-import Grup from './pages/Grups'
+import Statistics from './pages/Statistics'
 import Users from './pages/Users'
 import Blogs from './pages/Blogs'
 
@@ -40,6 +40,8 @@ const App = () => {
             <Route path={"/achievements"} element={<Layout login={login}><Achievements/></Layout>} />
             {/* Galleries */}
             <Route path={"/galleries"} element={<Layout login={login}><Galleries/></Layout>} />
+            {/* Statistika */}
+            <Route path={"/statistics"} element={<Layout login={login}><Statistics/></Layout>} />
             {/* Blog */}
             <Route path={"/blog"} element={<Layout login={login}><Blogs/></Layout>} />
             {/* News */}
@@ -48,8 +50,6 @@ const App = () => {
             <Route path={"/products"} element={<Layout login={login}><Products/></Layout>} />
             {/* Services */}
             <Route path={"/services"} element={<Layout login={login}><Services/></Layout>} />
-            {/* Grup */}
-            <Route path={"/grup"} element={<Layout login={login}><Grup/></Layout>} />
             {/* Users */}
             <Route path={"/users"} element={<Layout login={login}><Users/></Layout>} />
           </Routes>

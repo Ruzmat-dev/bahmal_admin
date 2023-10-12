@@ -12,20 +12,20 @@ import MaterialSymbolsGalleryThumbnailOutlineRounded from '../icons/MaterialSymb
 import GameIconsAchievement from '../icons/GameIconsAchievement';
 import CarbonBlog from '../icons/CarbonBlog';
 import IonNewspaperOutline from '../icons/IonNewspaperOutline';
-import MaterialSymbolsPerson from '../icons/MaterialSymbolsPerson';
 import SolarUsersGroupTwoRoundedOutline from '../icons/SolarUsersGroupTwoRoundedOutline';
 import { Button, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import AkarIconsStatisticUp from '../icons/AkarIconsStatisticUp';
 const mockdata = [
   { label: 'Dashbord', icon: MaterialSymbolsTeamDashboardOutline, link: "/dashbord" },
   { label: 'Categoryalar', icon: MaterialSymbolsCategoryOutlineRounded, link: "/categories" },
   { label: 'Yutuqlar', icon: GameIconsAchievement, link: "/achievements" },
   { label: 'Galereyalar', icon: MaterialSymbolsGalleryThumbnailOutlineRounded, link: "/galleries" },
+  { label: 'Statistika', icon: AkarIconsStatisticUp, link: "/statistics" },
   { label: 'Bloglar', icon: CarbonBlog, link: "/blog" },
   { label: 'Yangiliklar', icon: IonNewspaperOutline, link: "/news" },
   { label: 'Mahsulotlar', icon: MaterialSymbolsAddShoppingCartRounded, link: "/products" },
   { label: 'Xizmatlar', icon: MaterialSymbolsHomeRepairServiceOutlineRounded, link: "/services" },
-  { label: 'Guruhlar', icon: MaterialSymbolsPerson, link: "/grup" },
   { label: 'Foydalanuvchilar', icon: SolarUsersGroupTwoRoundedOutline, link: "/users" },
 ];
 

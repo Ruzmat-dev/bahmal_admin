@@ -11,9 +11,9 @@ export const getCategories = async() => {
     }
 }
 
-export const getCategoryById = async(id: string) => {
+export const getCategoryById = async(id: string , lang: "ru" | "uz" | "en") => {
     try { 
-        const res = await axiosPublic("uz").get<TCategory>(`/categories/${id}/`)
+        const res = await axiosPublic(lang).get<TCategory>(`/categories/${id}/`)
         return res
     } catch (error) {
         console.log(error)
