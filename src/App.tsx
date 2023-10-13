@@ -16,7 +16,8 @@ import Services from './pages/Services'
 import Statistics from './pages/Statistics'
 import Users from './pages/Users'
 import Blogs from './pages/Blogs'
-
+import NewBlog from './components/Blog/NewBlog'
+import EditBlog from './components/Blog/Edit'
 
 
 
@@ -44,6 +45,8 @@ const App = () => {
             <Route path={"/statistics"} element={<Layout login={login}><Statistics/></Layout>} />
             {/* Blog */}
             <Route path={"/blog"} element={<Layout login={login}><Blogs/></Layout>} />
+            <Route path={"/newBlog"} element={<Layout login={login}><NewBlog/></Layout>} /> 
+            <Route path={"/blog/edit/:id"} element={<Layout login={login}><EditBlog/></Layout>} />
             {/* News */}
             <Route path={"/news"} element={<Layout login={login}><News/></Layout>} />
             {/* Products */}

@@ -32,7 +32,13 @@ export interface TBlogs {
   results: Post[];
 }
 
-
+export interface TBlogsResults{
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  created_at: string;
+}
 
 
 export type  TChangeCategory = {
