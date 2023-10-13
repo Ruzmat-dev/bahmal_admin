@@ -12,7 +12,6 @@ import classes from './blog.module.css';
 import MaterialSymbolsDeleteOutlineRounded from '../icons/MaterialSymbolsDeleteOutlineRounded';
 import { getBlogs } from '../../api/data';
 import { TBlogsResults, TCategory } from '../../../types/data';
-import MaterialSymbolsVisibilityOutlineRounded from '../icons/MaterialSymbolsVisibilityOutlineRounded';
 import { Link } from 'react-router-dom';
 import { modals } from '@mantine/modals';
 import { axiosPrivate } from '../../api/axiosPrivate';
@@ -90,11 +89,6 @@ export default function Blog() {
     <Table.Tr key={index}>
       <Table.Td>{index + 1}</Table.Td>
       <Table.Td>{shortenText(row.title, 24)} </Table.Td>
-      <Table.Td className={classes.blog_iconWrapper}>
-        <Link to={`/categories/see/${row.id}`}>
-          <MaterialSymbolsVisibilityOutlineRounded fontSize={22} color='#A9A9A9' cursor="pointer" />
-        </Link>
-      </Table.Td>
       <Table.Td>
         <Link to={`/blog/edit/${row.id}`}>
           <MaterialSymbolsEditOutlineRounded fontSize={22} color='gold' cursor="pointer" />
@@ -129,7 +123,6 @@ export default function Blog() {
             <Table.Tr>
               <Th>Id</Th>
               <Th>Title</Th>
-              <Th>Korish</Th>
               <Th>Tahrirlash</Th>
               <Th>Ochirish</Th>
             </Table.Tr>

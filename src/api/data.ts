@@ -1,4 +1,4 @@
-import {  ProductResponse, TAchievement, TBlogs, TCategory, TGalleries, TStatistics } from "../../types/data";
+import {  ProductResponse, TAchievement, TBlogs, TBlogsResults, TCategory, TGalleries, TStatistics } from "../../types/data";
 import { axiosPublic } from "./axiosPublic";
 
 
@@ -32,6 +32,15 @@ export const getAchievements = async() => {
 export const getBlogs = async() => {
     try { 
         const res = await axiosPublic("uz").get<TBlogs>(`/blogs/`)
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getBlogById = async(id: string , lang: "ru" | "uz" | "en") => {
+    try { 
+        const res = await axiosPublic(lang).get<TBlogsResults>(`/blogs/${id}`)
         return res
     } catch (error) {
         console.log(error)

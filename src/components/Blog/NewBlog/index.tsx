@@ -24,12 +24,12 @@ interface FormData {
 
 const schema = yup
   .object({
-    title_ru: yup.string().required(),
-    title_uz: yup.string().required(),
-    title_en: yup.string().required(),
-    description_ru: yup.string().required(),
-    description_en: yup.string().required(),
-    description_uz: yup.string().required(),
+    title_ru: yup.string().required().min(3),
+    title_uz: yup.string().required().min(3),
+    title_en: yup.string().required().min(3),
+    description_ru: yup.string().required().min(3),
+    description_en: yup.string().required().min(3),
+    description_uz: yup.string().required().min(3),
   })
   .required()
 
@@ -99,9 +99,9 @@ export default function NewBlog() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.blogAdd}>
       <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", alignSelf: "center" }}>
-      <Button size="md" leftSection={<MaterialSymbolsArrowBackRounded />} bg="#6EB648" className={classes.goBackBtn} onClick={() => navigate(-1)}>
-            Chiqish
-          </Button>
+        <Button size="md" leftSection={<MaterialSymbolsArrowBackRounded />} bg="#6EB648" className={classes.goBackBtn} onClick={() => navigate(-1)}>
+          Chiqish
+        </Button>
         <Text c="#6EB648" size='xl' fw={'initial'}> Yangi Maqola qo`shish </Text>
         <div className={classes.imgWrapper}>
           <div className={classes.imgWrapperItem} onClick={() => fileRef.current?.click()}>
@@ -112,7 +112,7 @@ export default function NewBlog() {
           <div className={classes.wrapperImages}>
             <input
               hidden
-              ref={fileRef} 
+              ref={fileRef}
               accept='image/*'
               onChange={handleFileChange}
               type="file"
@@ -137,7 +137,7 @@ export default function NewBlog() {
           size='md'
           h={70}
           placeholder="Nomi"
-          {...register("title_uz", { required: true, min: 3, maxLength: 60 })}
+          {...register("title_uz")}
           error={errors.title_uz?.message}
           type='text'
         />
@@ -150,7 +150,7 @@ export default function NewBlog() {
           placeholder="Названия"
           style={{ flex: "1" }}
           size='md'
-          {...register("title_ru", { required: true, min: 3, maxLength: 60 })}
+          {...register("title_ru")}
           error={errors.title_ru?.message}
           type='text'
         />
@@ -163,12 +163,12 @@ export default function NewBlog() {
           placeholder="Title"
           style={{ flex: "1" }}
           size='md'
-          {...register("title_en", { required: true, min: 3, maxLength: 60 })}
+          {...register("title_en")}
           error={errors.title_ru?.message}
           type='text'
         />
       </div>
-  
+
       <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
 
         <Textarea
@@ -178,10 +178,11 @@ export default function NewBlog() {
             </span>
           }
           placeholder="Ma'lumot"
-          {...register("description_uz", { required: true, min: 3, maxLength: 60 })}
+          {...register("description_uz")}
           error={errors.description_uz?.message}
           style={{ flex: "1" }}
           size='md'
+          rows={12}
         />
         <Textarea
           label={
@@ -190,24 +191,25 @@ export default function NewBlog() {
             </span>
           }
           placeholder="Информация"
-          {...register("description_ru", { required: true, min: 3, maxLength: 60 })}
+          {...register("description_ru")}
           error={errors.description_ru?.message}
           style={{ flex: "1" }}
           size='md'
+          rows={12}
         />
-        <Textarea
-          label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
-              <span >Description</span> <FxemojiGreatbritainflag fontSize={18} />
-            </span>
-          }
-          placeholder="Description"
-          {...register("description_en", { required: true, min: 3, maxLength: 60 })}
-          error={errors.description_en?.message}
-          style={{ flex: "1" }}
-          size='md'
 
-        />
+          <Textarea
+            placeholder="Description"
+            {...register("description_en")}
+            label={
+              <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+                <span >Description</span> <FxemojiGreatbritainflag fontSize={18} />
+              </span>} 
+              style={{ flex: "1" }}
+              error={errors.description_en?.message} 
+              size='md'
+              rows={12}
+          />
       </div>
       <Button disabled={isSubmitting} type='submit' color='#6EB648' h={50} w={435} size='md'>
         <Text >

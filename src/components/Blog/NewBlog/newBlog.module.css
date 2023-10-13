@@ -39,3 +39,7 @@
     height: 100%;
     border-radius: 8px;
 }
+
+.textarea {
+    height: 500px ;
+}
