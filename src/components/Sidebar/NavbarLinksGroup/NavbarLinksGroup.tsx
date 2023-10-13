@@ -5,7 +5,7 @@ import classes from './NavbarLinksGroup.module.css';
 import { Link } from 'react-router-dom';
 
 interface LinksGroupProps {
-    icon: React.FC; // Use Record<string, never> for an empty object
+    icon: React.FC; 
     label: string;
     initiallyOpened?: boolean;
     links?: { label: string; link: string }[];

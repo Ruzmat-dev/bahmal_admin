@@ -1,7 +1,6 @@
 
 import MaterialSymbolsAddShoppingCartRounded from '../icons/MaterialSymbolsAddShoppingCartRounded';
 import MaterialSymbolsCategoryOutlineRounded from '../icons/MaterialSymbolsCategoryOutlineRounded';
-import MaterialSymbolsHomeRepairServiceOutlineRounded from '../icons/MaterialSymbolsHomeRepairServiceOutlineRounded';
 import MaterialSymbolsTeamDashboardOutline from '../icons/MaterialSymbolsTeamDashboardOutline';
 import {
   IconLogout,
@@ -12,7 +11,6 @@ import MaterialSymbolsGalleryThumbnailOutlineRounded from '../icons/MaterialSymb
 import GameIconsAchievement from '../icons/GameIconsAchievement';
 import CarbonBlog from '../icons/CarbonBlog';
 import IonNewspaperOutline from '../icons/IonNewspaperOutline';
-import SolarUsersGroupTwoRoundedOutline from '../icons/SolarUsersGroupTwoRoundedOutline';
 import { Button, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import AkarIconsStatisticUp from '../icons/AkarIconsStatisticUp';
@@ -25,8 +23,6 @@ const mockdata = [
   { label: 'Bloglar', icon: CarbonBlog, link: "/blog" },
   { label: 'Yangiliklar', icon: IonNewspaperOutline, link: "/news" },
   { label: 'Mahsulotlar', icon: MaterialSymbolsAddShoppingCartRounded, link: "/products" },
-  { label: 'Xizmatlar', icon: MaterialSymbolsHomeRepairServiceOutlineRounded, link: "/services" },
-  { label: 'Foydalanuvchilar', icon: SolarUsersGroupTwoRoundedOutline, link: "/users" },
 ];
 
 export function NavbarNested() {

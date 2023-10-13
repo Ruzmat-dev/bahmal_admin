@@ -12,9 +12,6 @@ import IonNewspaperOutline from "../icons/IonNewspaperOutline";
 import MaterialSymbolsAddShoppingCartRounded from "../icons/MaterialSymbolsAddShoppingCartRounded";
 import AkarIconsStatisticUp from "../icons/AkarIconsStatisticUp";
 
-
-
-
 const DashbordPage = () => {
   const [stats, setStats] = useState<{
     cats?: number;
@@ -39,15 +36,6 @@ const DashbordPage = () => {
         products: products?.data.count,
         statistics: statistics?.data.length
       })
-      // setCategory(categorys?.data);
-      // setAchievement(achievements?.data)
-      // setBlog(blogs?.data)
-      // setGalleri(galleries?.data)
-      // setNews(newss?.data)
-      // setProduct(products?.data)
-      // setStatistic(statistics?.data)
-      // console.log(categorys);
-      
     } catch (error) {
       console.log(error);
     }
@@ -59,11 +47,11 @@ const DashbordPage = () => {
   const data = [
     { label: "Categoryalar", icon: MaterialSymbolsCategoryOutlineRounded, color: "linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%)", link: "/categories" , count: stats.cats},
     { label: "Yutuqlar", icon: GameIconsAchievement, color: "linear-gradient(to right, #8360c3, #2ebf91)", link: "/achievement" , count: stats.achievements},
-    { label: "Blog", icon: CarbonBlog, color: "linear-gradient(to right, #fc5c7d, #6a82fb)", link: "/blog" , count: stats.blogs },    // xato 
     { label: "Galereyalar", icon: MaterialSymbolsGalleryThumbnailOutlineRounded, color: "linear-gradient(to right, #2c3e50, #4ca1af)", link: "/galleries" , count: stats.galleries}, 
-    { label: "Yangiliklar", icon: IonNewspaperOutline, color: "linear-gradient(to right, #00b09b, #96c93d)", link: "/news" , count: stats.news},   // xato
-    { label: "Mahsulotlar", icon: MaterialSymbolsAddShoppingCartRounded, color: "radial-gradient( circle 759px at -6.7% 50%, rgba(80,131,73,1) 0%, rgba(140,209,131,1) 26.2%, rgba(178,231,170,1) 50.6%, rgba(144,213,135,1) 74.1%, rgba(75,118,69,1) 100.3% )", link: "/products" , count: stats.products}, // xato   
     { label: "Statistika", icon: AkarIconsStatisticUp, color: "linear-gradient(to right, #ff6e7f, #bfe9ff)", link: "/statistics" , count: stats.statistics},    
+    { label: "Blog", icon: CarbonBlog, color: "linear-gradient(to right, #fc5c7d, #6a82fb)", link: "/blog" , count: stats.blogs },    
+    { label: "Yangiliklar", icon: IonNewspaperOutline, color: "linear-gradient(to right, #00b09b, #96c93d)", link: "/news" , count: stats.news}, 
+    { label: "Mahsulotlar", icon: MaterialSymbolsAddShoppingCartRounded, color: "radial-gradient( circle 759px at -6.7% 50%, rgba(80,131,73,1) 0%, rgba(140,209,131,1) 26.2%, rgba(178,231,170,1) 50.6%, rgba(144,213,135,1) 74.1%, rgba(75,118,69,1) 100.3% )", link: "/products" , count: stats.products},
   ]
   const cards = data.map((e) =>
     <Link
@@ -86,8 +74,7 @@ const DashbordPage = () => {
       </Card>
     </Link>
   )
-
-
+  
   return (
     <Box p={20} className={classes.dashbord}>
         <div className={classes.wrapper}>

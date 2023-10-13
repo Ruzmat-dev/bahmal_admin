@@ -14,11 +14,9 @@ import MaterialSymbolsDownload from '../../icons/MaterialSymbolsDownload';
 import MaterialSymbolsArrowBackRounded from '../../icons/MaterialSymbolsArrowBackRounded';
 import { useNavigate } from 'react-router-dom';
 interface FormData {
-  "title": string,
   "title_ru": string,
   "title_en": string,
   "title_uz": string,
-  "description": string,
   "description_ru": string,
   "description_en": string,
   "description_uz": string,
@@ -26,14 +24,12 @@ interface FormData {
 
 const schema = yup
   .object({
-    title: yup.string().required(),
-    title_ru: yup.string().required(),
-    title_uz: yup.string().required(),
-    title_en: yup.string().required(),
-    description: yup.string().required(),
-    description_ru: yup.string().required(),
-    description_en: yup.string().required(),
-    description_uz: yup.string().required(),
+    title_ru: yup.string().required().min(3),
+    title_uz: yup.string().required().min(3),
+    title_en: yup.string().required().min(3),
+    description_ru: yup.string().required().min(3),
+    description_en: yup.string().required().min(3),
+    description_uz: yup.string().required().min(3),
   })
   .required()
 
@@ -54,8 +50,7 @@ export default function NewCategories() {
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    const new_data = { ...data, image: selectedFile }
-    console.log(data);
+    const new_data = { ...data, image: selectedFile, title: data.title_en, description:data.description_uz}
 
     try {
       const response = await axiosPrivate.post('/categories/', new_data, {
@@ -102,15 +97,15 @@ export default function NewCategories() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.catalogAdd}>
-      <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", alignSelf: "center" }}>
-        <div className={classes.goBackBtn} onClick={() => navigate(-1)}>
-          <MaterialSymbolsArrowBackRounded fontSize={28} style={{ marginTop: "6px" }} />
-        </div>
-        <Text c="#6EB648" size='xl' fw={'initial'}> Yangi Categorya qo`shish </Text>
+      <div className={classes.catalogWrapper}>
+        <Button size="md" leftSection={<MaterialSymbolsArrowBackRounded />} bg="#6EB648" className={classes.goBackBtn} onClick={() => navigate(-1)}>
+            Chiqish
+          </Button>
+        <Text c="#6EB648" size='xl'> Yangi Categorya qo`shish </Text>
         <div className={classes.imgWrapper}>
           <div className={classes.imgWrapperItem} onClick={() => fileRef.current?.click()}>
             <span>
-              <MaterialSymbolsDownload fontSize={56} color='#6EB648' />
+              <MaterialSymbolsDownload fontSize={48} color='#6EB648' />
             </span>
           </div>
           <div className={classes.wrapperImages}>
@@ -122,7 +117,6 @@ export default function NewCategories() {
               type="file"
               id="picture"
             />
-
             <img
               src={previewURL}
               alt="Preview"
@@ -131,15 +125,6 @@ export default function NewCategories() {
         </div>
       </div>
 
-      <TextInput
-        label="Nomi"
-        withAsterisk
-        placeholder="Nomi"
-        {...register("title", { min: 3, maxLength: 59 })}
-        size='md'
-        error={errors.title?.message}
-        type='text'
-      />
       <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
         <TextInput
           label={
@@ -151,7 +136,7 @@ export default function NewCategories() {
           size='md'
           h={70}
           placeholder="Nomi"
-          {...register("title_uz", { required: true, min: 3, maxLength: 60 })}
+          {...register("title_uz")}
           error={errors.title_uz?.message}
           type='text'
         />
@@ -164,7 +149,7 @@ export default function NewCategories() {
           placeholder="Названия"
           style={{ flex: "1" }}
           size='md'
-          {...register("title_ru", { required: true, min: 3, maxLength: 60 })}
+          {...register("title_ru")}
           error={errors.title_ru?.message}
           type='text'
         />
@@ -177,19 +162,12 @@ export default function NewCategories() {
           placeholder="Title"
           style={{ flex: "1" }}
           size='md'
-          {...register("title_en", { required: true, min: 3, maxLength: 60 })}
+          {...register("title_en")}
           error={errors.title_ru?.message}
           type='text'
         />
       </div>
-      <Textarea
-        label="Ma'lumot"
-        withAsterisk
-        placeholder="Ma'lumot"
-        {...register("description", { required: true, min: 3, maxLength: 60 })}
-        size='md'
-        error={errors.description?.message}
-      />
+     
       <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
 
         <Textarea
@@ -199,10 +177,11 @@ export default function NewCategories() {
             </span>
           }
           placeholder="Ma'lumot"
-          {...register("description_uz", { required: true, min: 3, maxLength: 60 })}
+          {...register("description_uz")}
           error={errors.description_uz?.message}
           style={{ flex: "1" }}
           size='md'
+          rows={12}
         />
         <Textarea
           label={
@@ -211,10 +190,11 @@ export default function NewCategories() {
             </span>
           }
           placeholder="Информация"
-          {...register("description_ru", { required: true, min: 3, maxLength: 60 })}
+          {...register("description_ru")}
           error={errors.description_ru?.message}
           style={{ flex: "1" }}
           size='md'
+          rows={12}
         />
         <Textarea
           label={
@@ -223,11 +203,11 @@ export default function NewCategories() {
             </span>
           }
           placeholder="Description"
-          {...register("description_en", { required: true, min: 3, maxLength: 60 })}
+          {...register("description_en")}
           error={errors.description_en?.message}
           style={{ flex: "1" }}
           size='md'
-
+          rows={12}
         />
       </div>
       <Button disabled={isSubmitting} type='submit' color='#6EB648' h={50} w={435} size='md'>

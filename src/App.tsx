@@ -12,9 +12,7 @@ import Achievements from './pages/Achievements'
 import Galleries from './pages/Galleries'
 import News from './pages/News'
 import Products from './pages/Products'
-import Services from './pages/Services'
 import Statistics from './pages/Statistics'
-import Users from './pages/Users'
 import Blogs from './pages/Blogs'
 import NewBlog from './components/Blog/NewBlog'
 import EditBlog from './components/Blog/Edit'
@@ -51,10 +49,6 @@ const App = () => {
             <Route path={"/news"} element={<Layout login={login}><News/></Layout>} />
             {/* Products */}
             <Route path={"/products"} element={<Layout login={login}><Products/></Layout>} />
-            {/* Services */}
-            <Route path={"/services"} element={<Layout login={login}><Services/></Layout>} />
-            {/* Users */}
-            <Route path={"/users"} element={<Layout login={login}><Users/></Layout>} />
           </Routes>
         </BrowserRouter>
     </div>

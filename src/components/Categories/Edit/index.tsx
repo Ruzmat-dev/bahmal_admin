@@ -140,10 +140,10 @@ export default function CategoriesEdit() {
           </div>
         </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+      <div className={classes.wrapperInputs} >
         <TextInput
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Nomi</span> <TwemojiFlagUzbekistan fontSize={18} />
             </span>
           }
@@ -155,7 +155,7 @@ export default function CategoriesEdit() {
         />
         <TextInput
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Названия</span> <TwemojiFlagRussia fontSize={18} />
             </span>
           }
@@ -167,7 +167,7 @@ export default function CategoriesEdit() {
         />
         <TextInput
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Title</span> <FxemojiGreatbritainflag fontSize={18} />
             </span>
           }
@@ -178,10 +178,10 @@ export default function CategoriesEdit() {
           type='text'
         />
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+      <div className={classes.wrapperInputs} >
         <Textarea
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Ma'lumot</span> <TwemojiFlagUzbekistan fontSize={18} />
             </span>
           }
@@ -189,10 +189,11 @@ export default function CategoriesEdit() {
           {...register("description_uz")}
           style={{ flex: "1" }}
           size='md'
+          rows={12}
         />
         <Textarea
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Информация</span> <TwemojiFlagRussia fontSize={18} />
             </span>
           }
@@ -200,10 +201,11 @@ export default function CategoriesEdit() {
           {...register("description_ru")}
           style={{ flex: "1" }}
           size='md'
+          rows={12}
         />
         <Textarea
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Description</span> <FxemojiGreatbritainflag fontSize={18} />
             </span>
           }
@@ -211,6 +213,7 @@ export default function CategoriesEdit() {
           {...register("description_en")}
           style={{ flex: "1" }}
           size='md'
+          rows={12}
         />
       </div>
       <Button loading={loading} disabled={loading} type='submit' color='#6EB648' h={50} w={435} size='md' className={classes.goBackBtn}>
