@@ -43,3 +43,11 @@
   align-items: center;
   align-self: center;
 }
+
+.inputLabelStyle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+

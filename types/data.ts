@@ -127,3 +127,16 @@ export type TAchievements = {
   id: number;
   image: string;
 }
+
+interface Category {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+}
+
+export interface SubCategory {
+  id: number;
+  title: string;
+  category: Category;
+}

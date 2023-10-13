@@ -1,25 +1,48 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
     Table,
     ScrollArea,
     UnstyledButton,
     Text,
-    Button
+    Button,
+    TextInput
 } from '@mantine/core';
 import classes from './see.module.css';
 import MaterialSymbolsDeleteOutlineRounded from '../../icons/MaterialSymbolsDeleteOutlineRounded';
-import { getCategories } from '../../../api/data';
+import { getSubCategory } from '../../../api/data';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { modals } from '@mantine/modals';
 import { axiosPrivate } from '../../../api/axiosPrivate';
 import toast, { Toaster } from 'react-hot-toast';
-import { TCategory } from '../../../../types/data';
+import { SubCategory } from '../../../../types/data';
 import MaterialSymbolsAddRounded from '../../icons/MaterialSymbolsAddRounded';
 import MaterialSymbolsEditOutlineRounded from '../../icons/MaterialSymbolsEditOutlineRounded';
 import MaterialSymbolsArrowBackRounded from '../../icons/MaterialSymbolsArrowBackRounded';
+import TwemojiFlagUzbekistan from '../../icons/TwemojiFlagUzbekistan';
+import TwemojiFlagRussia from '../../icons/TwemojiFlagRussia';
+import FxemojiGreatbritainflag from '../../icons/FxemojiGreatbritainflag';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+import { AxiosError } from 'axios';
 interface ThProps {
     children: React.ReactNode;
 }
+
+type FormData = {
+    title_uz?: string;
+    title_ru?: string;
+    title_en?: string;
+};
+
+
+const schema = yup
+    .object({
+        title_ru: yup.string(),
+        title_uz: yup.string(),
+        title_en: yup.string(),
+    })
+    .required()
 
 function Th({ children }: ThProps) {
     return (
@@ -33,48 +56,51 @@ function Th({ children }: ThProps) {
     );
 }
 
-function shortenText(text: string, maxLength: number) {
-    if (text.length <= maxLength) {
-        return text;
-    }
-    return text.substring(0, maxLength - 3) + '...';
+// function shortenText(text: string, maxLength: number) {
+//     if (text.length <= maxLength) {
+//         return text;
+//     }
+//     return text.substring(0, maxLength - 3) + '...';
 
-}
+// }
 export default function CategoriesSee() {
-    const [category, setCategory] = useState<TCategory[] | undefined>([]);
-    const [parentName, setParentName] = useState<string>('')
+    const [subCategory, setSubCategory] = useState<SubCategory[]>([]);
+    const [parentName, setParentName] = useState<string>("")
+    const { register, handleSubmit } = useForm<FormData>({ resolver: yupResolver(schema) })
 
     const handleDelete = async (id: number) => {
         try {
-            await axiosPrivate.delete(`/categories/${id}/`)
+            await axiosPrivate.delete(`/subcategories/${id}/`)
             toast.success('Movafiqiyatli!')
-            fetchData()
+            fetchSubs()
 
         } catch (error) {
             toast.error('O`chirishda xatolik yuz berdi!');
         }
     };
+
     const { id } = useParams()
 
-    const fetchData = async () => {
-        try {
-            const res = await getCategories()
-            const subs = res ? res.data.filter((item) => item?.id === Number(id)) : []
-            setCategory(subs)
-            setParentName(subs[0].title);
-            
-        } catch (error) {
-            console.log(error);
+    const fetchSubs = useCallback(async () => {
+        if (id) {
+            const res_uz = await getSubCategory(id, "uz")
+            if (res_uz) {
+                setSubCategory(res_uz.data)
+            }
+            res_uz?.data.map((e) => {
+                setParentName(e.category.title)
+            })
         }
-    }
+
+    }, [id])
 
     useEffect(() => {
-        fetchData()
-    }, [])
+        fetchSubs()
+    }, [fetchSubs])
 
     const navigate = useNavigate();
 
-    const openDeleteModal = (e: TCategory) => {
+    const openDeleteModal = (e: SubCategory) => {
         modals.openConfirmModal({
             title: e.title,
             centered: true,
@@ -89,10 +115,42 @@ export default function CategoriesSee() {
         })
     }
 
-    const rows = category && category.map((row) => (
+
+    const onSubmit = async (data: FormData) => {
+        const new_data = { ...data, title: data.title_uz, category: Number(id) }
+
+        try {
+            await axiosPrivate.post('/subcategories/', new_data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            toast.success('Movafiqiyatli Qoshildi!')
+            fetchSubs()
+        } catch (error) {
+            const axiosError = error as AxiosError;
+            console.log(error);
+
+            const myError = axiosError.request?.status ?? 0;
+            const errorNumber = Math.floor(myError / 100);
+
+            if (errorNumber === 4) {
+                toast.error('Xato malumot kiritildi!');
+            } else if (errorNumber === 5) {
+                toast.error('Uzir hatoliq yuz berdi!');
+            } else {
+                toast.error('Internet aloqasi yo`q!');
+            }
+        }
+        modals.closeAll()
+    }
+
+
+
+    const rows = subCategory && subCategory.map((row) => (
         <Table.Tr key={row.id}>
             <Table.Td>{row.id}</Table.Td>
-            <Table.Td>{shortenText(row.title, 24)} </Table.Td>
+            <Table.Td>{row.title} </Table.Td>
             <Table.Td>
                 <Link to={`/categories/add/${row.id}`}>
                     <MaterialSymbolsEditOutlineRounded fontSize={22} color='gold' cursor="pointer" />
@@ -114,7 +172,51 @@ export default function CategoriesSee() {
                         </Button>
                     </div>
                     <Text c="#6EB648" size='xl' fw={'initial'}> {parentName ?? "No Data"} </Text>
-                    <Button className={classes.addNewCategory} color='#6EB648'>
+                    <Button className={classes.addNewCategory} color='#6EB648'
+                        onClick={() => {
+                            modals.open({
+                                title: 'Yangi catalog qoshish',
+                                children: (
+                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                        <TextInput
+                                            label={
+                                                <span className={classes.inputLabelStyle}>
+                                                    <span >Nomi</span> <TwemojiFlagUzbekistan fontSize={18} />
+                                                </span>
+                                            }
+                                            {...register("title_uz")}
+                                            placeholder="Nomi" data-autofocus
+                                        />
+
+                                        <TextInput
+                                            label={
+                                                <span className={classes.inputLabelStyle}>
+                                                    <span >Названия</span> <TwemojiFlagRussia fontSize={18} />
+                                                </span>
+                                            }
+                                            {...register("title_ru")}
+                                            placeholder="Названия" data-autofocus
+                                            style={{ paddingTop: "20px", paddingBottom: "20px" }}
+                                        />
+
+                                        <TextInput
+                                            label={
+                                                <span className={classes.inputLabelStyle}>
+                                                    <span >Title</span> <FxemojiGreatbritainflag fontSize={18} />
+                                                </span>
+                                            }
+                                            {...register("title_en")}
+                                            placeholder="Title" data-autofocus
+                                        />
+
+                                        <Button bg="#6EB648" fullWidth type='submit' mt="md">
+                                            Yuborish
+                                        </Button>
+                                    </form>
+                                ),
+                            });
+                        }}
+                        >
                         <MaterialSymbolsAddRounded fontWeight={700} fontSize={22} />
                         Yangi Categorya qoshish
                     </Button>

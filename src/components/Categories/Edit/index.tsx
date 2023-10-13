@@ -34,7 +34,7 @@ const schema = yup
     description: yup.string(),
     description_ru: yup.string(),
     description_en: yup.string(),
-    description_uz: yup.string(), 
+    description_uz: yup.string(),
   })
   .required()
 
@@ -43,13 +43,13 @@ export default function CategoriesEdit() {
   const [loading, setLoading] = useState<boolean>(false)
   const [parentName, setParentName] = useState<string | undefined | null>('')
   const [imageUrl, setImageUrl] = useState<string>("")
-  const { register, setValue, handleSubmit  } = useForm<FormData>({resolver: yupResolver(schema)})
-  
+  const { register, setValue, handleSubmit } = useForm<FormData>({ resolver: yupResolver(schema) })
+
   const { id } = useParams()
 
   const handleFetchData = useCallback(async () => {
     if (id) {
-      const [res_uz, res_ru, res_en] = await Promise.all([getCategoryById(id, "uz"), getCategoryById(id , "ru"), getCategoryById(id , "en")])
+      const [res_uz, res_ru, res_en] = await Promise.all([getCategoryById(id, "uz"), getCategoryById(id, "ru"), getCategoryById(id, "en")])
       if (res_en && res_uz && res_ru) {
         setValue("title_uz", res_uz.data.title)
         setValue("title_ru", res_ru.data.title)
