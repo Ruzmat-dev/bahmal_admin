@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { getStatistics } from "../../api/data"
+import { getStatistics, getStatisticsById } from "../../api/data"
 import { Table, Text, Button, Modal, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { TStatistics } from "../../../types/data";
@@ -16,10 +16,10 @@ import TwemojiFlagRussia from "../icons/TwemojiFlagRussia";
 import FxemojiGreatbritainflag from "../icons/FxemojiGreatbritainflag";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup"
+import { AxiosError } from "axios";
 
 interface FormValues {
   number: number,
-  body: string,
   body_ru: string,
   body_en: string,
   body_uz: string,
@@ -28,7 +28,6 @@ interface FormValues {
 const schema = yup
   .object({
     number: yup.number().required("Iltimos bu joyni toldirig").min(1),
-    body: yup.string().required(),
     body_ru: yup.string().required("Iltimos bu joyni toldirig"),
     body_en: yup.string().required("Iltimos bu joyni toldirig"),
     body_uz: yup.string().required("Iltimos bu joyni toldirig"),
@@ -47,16 +46,13 @@ const StatisticItem = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await axiosPrivate.delete(`/galleries/${id}/`)
-      toast.success('Movafiqiyatli!')
+      await axiosPrivate.delete(`/statistics/${id}/`)
+      toast.success('Movafiqiyatli Ochirildi!')
       fetchStatistics()
     } catch (error) {
       toast.error('O`chirishda xatolik yuz berdi!');
     }
   };
-
-
-
 
   useEffect(() => {
     fetchStatistics()
@@ -69,7 +65,46 @@ const StatisticItem = () => {
   } = useForm<FormValues>({
     resolver: yupResolver(schema)
   });
+  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+    const new_data = {...data , body: data.body_uz}
+    try {
+      await axiosPrivate.post('/statistics/', new_data)
+      toast.success('Movafiqiyatli Qoshildi!')
+      fetchStatistics()
+      close()
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      const myError = axiosError.request?.status ?? 0;
+      const errorNumber = Math.floor(myError / 100);
+      if (errorNumber === 4) {
+        toast.error('Xato malumot kiritildi!');
+      } else if (errorNumber === 5) {
+        toast.error('Uzir hatoliq yuz berdi!');
+      } else {
+        toast.error('Internet aloqasi yo`q!');
+      }
+    }
+  }
 
+  const editStatistics = async (id: number) => {
+
+    const res = await getStatisticsById(id)
+
+    console.log(res?.data);
+    
+    modals.open({
+      title: 'Subscribe to newsletter',
+      children: (
+        <>
+          <TextInput label="Your email" placeholder="Your email" data-autofocus />
+          <Button fullWidth  mt="md">
+            Submit
+          </Button>
+        </>
+      ),
+    });
+    // modals.closeAll()
+  } 
 
   const openDeleteModal = (e: TStatistics) => {
     modals.openConfirmModal({
@@ -92,43 +127,17 @@ const StatisticItem = () => {
       <Table.Td>{element.number}</Table.Td>
       <Table.Td>{element.body}</Table.Td>
       <Table.Td>
-        <MaterialSymbolsEditOutlineRounded fontSize={22} color='gold' cursor="pointer" />
+        <MaterialSymbolsEditOutlineRounded fontSize={22} color='gold' cursor="pointer" 
+         onClick={() => {
+          editStatistics(element.id)
+        }}
+        />
       </Table.Td>
       <Table.Td>
         <MaterialSymbolsDeleteOutlineRounded fontSize={22} color='red' cursor="pointer" onClick={() => openDeleteModal(element)} />
       </Table.Td>
     </Table.Tr>
   ));
-
-
-  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-    
-    const response = await axiosPrivate.put('/statistics/', data)
-    console.log(response);
-
-    // try {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     }
-    //   });
-    //   toast.success('Movafiqiyatli Qoshildi!')
-    //   console.log(response);
-    // } catch (error) {
-    //   const axiosError = error as AxiosError;
-    //   console.log(error);
-
-    //   const myError = axiosError.request?.status ?? 0;
-    //   const errorNumber = Math.floor(myError / 100);
-
-    //   if (errorNumber === 4) {
-    //     toast.error('Xato malumot kiritildi!');
-    //   } else if (errorNumber === 5) {
-    //     toast.error('Uzir hatoliq yuz berdi!');
-    //   } else {
-    //     toast.error('Internet aloqasi yo`q!');
-    //   }
-    // }
-  }
 
   return (
     <>
@@ -178,10 +187,13 @@ const StatisticItem = () => {
             error={errors.number?.message}
           />
           <div className={classes.btnWrapp}>
-            <Button  className={classes.send} type='submit'> Yuborish </Button>
+            <Button bg="#6EB648" className={classes.send} type='submit'> Yuborish </Button>
           </div>
         </form>
       </Modal>
+
+
+      
     <div className={classes.statisric}>
 
       <div className={classes.headerForm}>

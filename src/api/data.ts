@@ -110,3 +110,12 @@ export const getStatistics = async () => {
     console.log(error);
   }
 };
+
+export const getStatisticsById = async (id:number) => {
+  try {
+    const res = await axiosPublic("uz").get<TStatistics[]>(`/statistics/${id}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -42,7 +42,7 @@ const App = () => {
             {/* Galleries */}
             <Route path={"/galleries"} element={<Layout login={login}><Galleries/></Layout>} />
             {/* Statistika */}
-            <Route path={"/statistics"} element={<Layout login={login}><Statistics/></Layout>} />
+            <Route path={"/statistics"} element={<Layout login={login}><Statistics/></Layout>}/>
             {/* Blog */}
             <Route path={"/blog"} element={<Layout login={login}><Blogs/></Layout>} />
             <Route path={"/newBlog"} element={<Layout login={login}><NewBlog/></Layout>} /> 
