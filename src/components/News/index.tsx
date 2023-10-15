@@ -109,7 +109,7 @@ export default function NewsItem() {
             w={600}
             leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
           />
-          <Link to="/newBlog">
+          <Link to="/newNews">
             <Button className={classes.addNewNews} color='#6EB648'>
               <MaterialSymbolsAddRounded fontWeight={700} fontSize={22} />
               <Text fw={'normal'}>Yangilik qoshish</Text>
