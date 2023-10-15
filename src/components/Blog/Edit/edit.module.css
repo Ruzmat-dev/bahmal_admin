@@ -69,3 +69,18 @@
     font-size: 16px;
     font-weight: 200;
 }
+
+.wrapperInputs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.inputLabelStyle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  

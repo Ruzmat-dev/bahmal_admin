@@ -25,7 +25,6 @@ const DashbordPage = () => {
 
   const fetchData = async () => {
     try {
-
       const [ cats, achievements, blogs, galleries, news, products, statistics] = await Promise.all([getCategories(), getAchievements(), getBlogs(), getGalleries(), getNews(), getProducts(), getStatistics()])
       setStats({
         cats: cats?.data.length,

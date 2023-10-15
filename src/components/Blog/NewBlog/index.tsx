@@ -54,18 +54,15 @@ export default function NewBlog() {
     console.log(new_data);
 
     try {
-      const response = await axiosPrivate.post('/blogs/', new_data, {
+       await axiosPrivate.post('/blogs/', new_data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       toast.success('Movafiqiyatli Qoshildi!')
-      console.log(response);
       setIsSubmitting(false);
     } catch (error) {
       const axiosError = error as AxiosError;
-      console.log(error);
-
       const myError = axiosError.request?.status ?? 0;
       const errorNumber = Math.floor(myError / 100);
 
@@ -91,7 +88,6 @@ export default function NewBlog() {
         setPreviewImage(result)
       }
       setSelectedFile(file)
-
       reader.readAsDataURL(file)
     }
   };
@@ -126,10 +122,10 @@ export default function NewBlog() {
           </div>
         </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+      <div className={classes.wrapperInputs}>
         <TextInput
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Nomi</span> <TwemojiFlagUzbekistan fontSize={18} />
             </span>
           }
@@ -143,7 +139,7 @@ export default function NewBlog() {
         />
         <TextInput
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Названия</span> <TwemojiFlagRussia fontSize={18} />
             </span>
           }
@@ -156,7 +152,7 @@ export default function NewBlog() {
         />
         <TextInput
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Title</span> <FxemojiGreatbritainflag fontSize={18} />
             </span>
           }
@@ -169,11 +165,11 @@ export default function NewBlog() {
         />
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+      <div className={classes.wrapperInputs}>
 
         <Textarea
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Ma'lumot</span> <TwemojiFlagUzbekistan fontSize={18} />
             </span>
           }
@@ -186,7 +182,7 @@ export default function NewBlog() {
         />
         <Textarea
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Информация</span> <TwemojiFlagRussia fontSize={18} />
             </span>
           }
@@ -202,7 +198,7 @@ export default function NewBlog() {
             placeholder="Description"
             {...register("description_en")}
             label={
-              <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+              <span className={classes.inputLabelStyle}>
                 <span >Description</span> <FxemojiGreatbritainflag fontSize={18} />
               </span>} 
               style={{ flex: "1" }}

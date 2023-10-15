@@ -56,31 +56,25 @@ function Th({ children }: ThProps) {
     );
 }
 
-// function shortenText(text: string, maxLength: number) {
-//     if (text.length <= maxLength) {
-//         return text;
-//     }
-//     return text.substring(0, maxLength - 3) + '...';
-
-// }
 export default function CategoriesSee() {
     const [subCategory, setSubCategory] = useState<SubCategory[]>([]);
     const [parentName, setParentName] = useState<string>("")
     const { register, handleSubmit } = useForm<FormData>({ resolver: yupResolver(schema) })
-
+    
+    const { id } = useParams()
+    const navigate = useNavigate();
+  
     const handleDelete = async (id: number) => {
         try {
             await axiosPrivate.delete(`/subcategories/${id}/`)
             toast.success('Movafiqiyatli!')
             fetchSubs()
-
         } catch (error) {
             toast.error('O`chirishda xatolik yuz berdi!');
         }
     };
 
-    const { id } = useParams()
-
+    
     const fetchSubs = useCallback(async () => {
         if (id) {
             const res_uz = await getSubCategory(id, "uz")
@@ -98,7 +92,6 @@ export default function CategoriesSee() {
         fetchSubs()
     }, [fetchSubs])
 
-    const navigate = useNavigate();
 
     const openDeleteModal = (e: SubCategory) => {
         modals.openConfirmModal({

@@ -37,32 +37,26 @@ const Galleries = () => {
         setPreviewImage(result)
       }
       setSelectedFile(file)
-
       reader.readAsDataURL(file)
     }
   };
 
   const postGalleries = async () => {
     setLoading(true);
-
   try {
     const formData = new FormData();
     formData.append('image', selectedFile!); 
-
     await axiosPrivate.post('/galleries/', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-
     toast.success('Movafiqiyatli Qoshildi!');
     setLoading(false);
     fetchDataGalleries()
     close()
     } catch (error) {
       const axiosError = error as AxiosError;
-      console.log(error);
-
       const myError = axiosError.request?.status ?? 0;
       const errorNumber = Math.floor(myError / 100);
 
@@ -77,7 +71,6 @@ const Galleries = () => {
       close()
     }
   }
-
 
   return (
     <>
@@ -109,7 +102,6 @@ const Galleries = () => {
                   src={previewURL}
                   alt="Preview"
                 />
-
               </div>
             </div>
             <Button loading={loading} disabled={loading} className={classes.send} bg="#6EB648"  onClick={postGalleries}> Yuborish </Button>

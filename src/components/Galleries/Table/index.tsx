@@ -88,12 +88,10 @@ export default function GalleriesTable() {
                             type="file"
                             id="picture"
                         />
-
                             <img
                                 src={imageUrl ? imageUrl : e.image}
                                 alt="Preview"
                             />
-
                     </div>
                 </div>
             </>
@@ -108,24 +106,18 @@ export default function GalleriesTable() {
         try {
             const formData = new FormData();
             formData.append('image', previewURL!);
-            console.log(previewURL);
-            
             await axiosPrivate.put(`/galleries/${id}/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
             toast.success('Movafiqiyatli Qoshildi!');
             setLoading(false);
             fetchData();
         } catch (error) {
             const axiosError = error as AxiosError;
-            console.log(error);
-
             const myError = axiosError.request?.status ?? 0;
             const errorNumber = Math.floor(myError / 100);
-
             if (errorNumber === 4) {
                 toast.error('Xato malumot kiritildi!');
             } else if (errorNumber === 5) {
@@ -136,7 +128,6 @@ export default function GalleriesTable() {
             setLoading(false);
         }
     }
-console.log(galleries);
 
     return (
         <div className={classes.catalog}>

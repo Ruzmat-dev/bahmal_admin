@@ -32,14 +32,15 @@ const schema = yup
     description_uz: yup.string().required().min(3),
   })
   .required()
-
-export default function NewCategories() {
-  const fileRef = useRef<HTMLInputElement | null>(null)
-
+  
+  export default function NewCategories() {
+    const fileRef = useRef<HTMLInputElement | null>(null)
+    const navigate = useNavigate();
+    
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewURL, setPreviewImage] = useState<string>('https://content.hostgator.com/img/weebly_image_sample.png');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
+  
   const {
     register,
     handleSubmit,
@@ -51,7 +52,6 @@ export default function NewCategories() {
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     const new_data = { ...data, image: selectedFile, title: data.title_en, description:data.description_uz}
-
     try {
       const response = await axiosPrivate.post('/categories/', new_data, {
         headers: {
@@ -63,11 +63,8 @@ export default function NewCategories() {
       setIsSubmitting(false);
     } catch (error) {
       const axiosError = error as AxiosError;
-      console.log(error);
-
       const myError = axiosError.request?.status ?? 0;
       const errorNumber = Math.floor(myError / 100);
-
       if (errorNumber === 4) {
         toast.error('Xato malumot kiritildi!');
       } else if (errorNumber === 5) {
@@ -79,7 +76,6 @@ export default function NewCategories() {
     }
   }
 
-  const navigate = useNavigate();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files?.[0]
@@ -90,7 +86,6 @@ export default function NewCategories() {
         setPreviewImage(result)
       }
       setSelectedFile(file)
-
       reader.readAsDataURL(file)
     }
   };
@@ -125,10 +120,10 @@ export default function NewCategories() {
         </div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+      <div className={classes.wrapperInputs}>
         <TextInput
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Nomi</span> <TwemojiFlagUzbekistan fontSize={18} />
             </span>
           }
@@ -142,7 +137,7 @@ export default function NewCategories() {
         />
         <TextInput
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle} >
               <span >Названия</span> <TwemojiFlagRussia fontSize={18} />
             </span>
           }
@@ -155,7 +150,7 @@ export default function NewCategories() {
         />
         <TextInput
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Title</span> <FxemojiGreatbritainflag fontSize={18} />
             </span>
           }
@@ -168,11 +163,11 @@ export default function NewCategories() {
         />
       </div>
      
-      <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+      <div className={classes.wrapperInputs}>
 
         <Textarea
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Ma'lumot</span> <TwemojiFlagUzbekistan fontSize={18} />
             </span>
           }
@@ -185,7 +180,7 @@ export default function NewCategories() {
         />
         <Textarea
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Информация</span> <TwemojiFlagRussia fontSize={18} />
             </span>
           }
@@ -198,7 +193,7 @@ export default function NewCategories() {
         />
         <Textarea
           label={
-            <span style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}>
+            <span className={classes.inputLabelStyle}>
               <span >Description</span> <FxemojiGreatbritainflag fontSize={18} />
             </span>
           }
@@ -210,6 +205,7 @@ export default function NewCategories() {
           rows={12}
         />
       </div>
+
       <Button disabled={isSubmitting} type='submit' color='#6EB648' h={50} w={435} size='md'>
         <Text >
           {isSubmitting ? <Loader color='#6EB648' /> : 'Qoshish'}

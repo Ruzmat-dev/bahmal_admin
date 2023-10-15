@@ -1,7 +1,7 @@
 .blogAdd {
     width: 100%;
     padding: 30px;
-    margin: auto; 
+    margin: auto;
     display: flex;
     gap: 20px;
     flex-direction: column;
@@ -34,12 +34,25 @@
     opacity: 1;
 }
 
-.wrapperImages > img{
+.wrapperImages>img {
     width: 100%;
     height: 100%;
     border-radius: 8px;
 }
 
 .textarea {
-    height: 500px ;
+    height: 500px;
+}
+
+.wrapperInputs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.inputLabelStyle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
 }
