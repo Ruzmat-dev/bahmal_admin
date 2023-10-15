@@ -16,6 +16,7 @@ import Statistics from './pages/Statistics'
 import Blogs from './pages/Blogs'
 import NewBlog from './components/Blog/NewBlog'
 import EditBlog from './components/Blog/Edit'
+import EditNews from './components/News/Edit'
 
 
 
@@ -47,6 +48,7 @@ const App = () => {
             <Route path={"/blog/edit/:id"} element={<Layout login={login}><EditBlog/></Layout>} />
             {/* News */}
             <Route path={"/news"} element={<Layout login={login}><News/></Layout>} />
+            <Route path={"/news/edit/:id"} element={<Layout login={login}><EditNews/></Layout>} />
             {/* Products */}
             <Route path={"/products"} element={<Layout login={login}><Products/></Layout>} />
           </Routes>

@@ -84,6 +84,15 @@ export const getNews = async () => {
   }
 };
 
+export const getNewsById = async (id: string, lang: "ru" | "uz" | "en") => {
+  try {
+    const res = await axiosPublic(lang).get<TBlogsResults>(`/news/${id}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getProducts = async () => {
   try {
     const res = await axiosPublic("uz").get<ProductResponse>(`/products/`);
