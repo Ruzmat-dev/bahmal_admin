@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import classes from "./newBlog.module.css"
 import { useRef, useState } from 'react';
 import { axiosPrivate } from '../../../api/axiosPrivate';
-import { TextInput, Button, Loader, Textarea, Text } from '@mantine/core';
+import { Button, Loader, Textarea, Text } from '@mantine/core';
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import toast, { Toaster } from 'react-hot-toast';
@@ -123,7 +123,7 @@ export default function NewBlog() {
         </div>
       </div>
       <div className={classes.wrapperInputs}>
-        <TextInput
+        <Textarea
           label={
             <span className={classes.inputLabelStyle}>
               <span >Nomi</span> <TwemojiFlagUzbekistan fontSize={18} />
@@ -135,9 +135,9 @@ export default function NewBlog() {
           placeholder="Nomi"
           {...register("title_uz")}
           error={errors.title_uz?.message}
-          type='text'
+          rows={4}
         />
-        <TextInput
+        <Textarea
           label={
             <span className={classes.inputLabelStyle}>
               <span >Названия</span> <TwemojiFlagRussia fontSize={18} />
@@ -148,9 +148,9 @@ export default function NewBlog() {
           size='md'
           {...register("title_ru")}
           error={errors.title_ru?.message}
-          type='text'
+          rows={4}
         />
-        <TextInput
+        <Textarea
           label={
             <span className={classes.inputLabelStyle}>
               <span >Title</span> <FxemojiGreatbritainflag fontSize={18} />
@@ -161,7 +161,7 @@ export default function NewBlog() {
           size='md'
           {...register("title_en")}
           error={errors.title_ru?.message}
-          type='text'
+          rows={4}
         />
       </div>
 
@@ -178,7 +178,7 @@ export default function NewBlog() {
           error={errors.description_uz?.message}
           style={{ flex: "1" }}
           size='md'
-          rows={12}
+          rows={8}
         />
         <Textarea
           label={
@@ -191,7 +191,7 @@ export default function NewBlog() {
           error={errors.description_ru?.message}
           style={{ flex: "1" }}
           size='md'
-          rows={12}
+          rows={8}
         />
 
           <Textarea
@@ -204,7 +204,7 @@ export default function NewBlog() {
               style={{ flex: "1" }}
               error={errors.description_en?.message} 
               size='md'
-              rows={12}
+              rows={8}
           />
       </div>
       <Button disabled={isSubmitting} type='submit' color='#6EB648' h={50} w={435} size='md'>

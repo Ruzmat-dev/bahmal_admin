@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import classes from "./edit.module.css"
-import { TextInput, Button, Text, Textarea } from '@mantine/core';
+import { Button, Text, Textarea } from '@mantine/core';
 import MaterialSymbolsArrowBackRounded from '../../icons/MaterialSymbolsArrowBackRounded';
 import MaterialSymbolsDownload from '../../icons/MaterialSymbolsDownload';
 import TwemojiFlagUzbekistan from '../../icons/TwemojiFlagUzbekistan';
@@ -141,7 +141,7 @@ export default function EditBlog() {
         </div>
       </div>
       <div className={classes.wrapperInputs}>
-        <TextInput
+        <Textarea
           label={
             <span className={classes.inputLabelStyle}>
               <span >Nomi</span> <TwemojiFlagUzbekistan fontSize={18} />
@@ -151,9 +151,9 @@ export default function EditBlog() {
           style={{ flex: "1", height: "60px" }}
           size='md'
           h={70}
-          type='text'
+          rows={4}
         />
-        <TextInput
+        <Textarea
           label={
             <span className={classes.inputLabelStyle}>
               <span >Названия</span> <TwemojiFlagRussia fontSize={18} />
@@ -163,9 +163,9 @@ export default function EditBlog() {
           {...register("title_ru")}
           style={{ flex: "1" }}
           size='md'
-          type='text'
+          rows={4}
         />
-        <TextInput
+        <Textarea
           label={
             <span className={classes.inputLabelStyle}>
               <span >Title</span> <FxemojiGreatbritainflag fontSize={18} />
@@ -175,7 +175,7 @@ export default function EditBlog() {
           {...register("title_en")}
           style={{ flex: "1" }}
           size='md'
-          type='text'
+          rows={4}
         />
       </div>
       <div className={classes.wrapperInputs}>
@@ -189,6 +189,7 @@ export default function EditBlog() {
           {...register("description_uz")}
           style={{ flex: "1" }}
           size='md'
+          rows={8}
         />
         <Textarea
           label={
@@ -200,6 +201,7 @@ export default function EditBlog() {
           {...register("description_ru")}
           style={{ flex: "1" }}
           size='md'
+          rows={8}
         />
         <Textarea
           label={
@@ -211,6 +213,7 @@ export default function EditBlog() {
           {...register("description_en")}
           style={{ flex: "1" }}
           size='md'
+          rows={8}
         />
       </div>
       <Button loading={loading} disabled={loading} type='submit' color='#6EB648' h={50} w={435} size='md' className={classes.goBackBtn}>
