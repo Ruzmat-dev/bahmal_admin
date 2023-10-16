@@ -111,9 +111,9 @@ export const getStatistics = async () => {
   }
 };
 
-export const getStatisticsById = async (id:number) => {
+export const getStatisticsById = async (id:string, lang: "ru" | "uz" | "en") => {
   try {
-    const res = await axiosPublic("uz").get<TStatistics[]>(`/statistics/${id}`);
+    const res = await axiosPublic(lang).get<TStatistics>(`/statistics/${id}`);
     return res;
   } catch (error) {
     console.log(error);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { getStatistics, getStatisticsById } from "../../api/data"
+import { getStatistics } from "../../api/data"
 import { Table, Text, Button, Modal, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { TStatistics } from "../../../types/data";
@@ -17,6 +17,7 @@ import FxemojiGreatbritainflag from "../icons/FxemojiGreatbritainflag";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup"
 import { AxiosError } from "axios";
+import { Link } from "react-router-dom";
 
 interface FormValues {
   number: number,
@@ -86,25 +87,6 @@ const StatisticItem = () => {
     }
   }
 
-  const editStatistics = async (id: number) => {
-
-    const res = await getStatisticsById(id)
-
-    console.log(res?.data);
-    
-    modals.open({
-      title: 'Subscribe to newsletter',
-      children: (
-        <>
-          <TextInput label="Your email" placeholder="Your email" data-autofocus />
-          <Button fullWidth  mt="md">
-            Submit
-          </Button>
-        </>
-      ),
-    });
-    // modals.closeAll()
-  } 
 
   const openDeleteModal = (e: TStatistics) => {
     modals.openConfirmModal({
@@ -126,13 +108,11 @@ const StatisticItem = () => {
       <Table.Td>{element.id}</Table.Td>
       <Table.Td>{element.number}</Table.Td>
       <Table.Td>{element.body}</Table.Td>
+      <Link to={`/statisrics/edit/${element.id}`}>
       <Table.Td>
-        <MaterialSymbolsEditOutlineRounded fontSize={22} color='gold' cursor="pointer" 
-         onClick={() => {
-          editStatistics(element.id)
-        }}
-        />
+        <MaterialSymbolsEditOutlineRounded fontSize={22} color='gold' cursor="pointer"/>
       </Table.Td>
+      </Link>
       <Table.Td>
         <MaterialSymbolsDeleteOutlineRounded fontSize={22} color='red' cursor="pointer" onClick={() => openDeleteModal(element)} />
       </Table.Td>

@@ -18,6 +18,7 @@ import NewBlog from './components/Blog/NewBlog'
 import EditBlog from './components/Blog/Edit'
 import EditNews from './components/News/Edit'
 import NewNews from './components/News/NewNews'
+import StatisticsEdit from './components/Statistics/Edit'
 
 
 
@@ -43,6 +44,7 @@ const App = () => {
             <Route path={"/galleries"} element={<Layout login={login}><Galleries/></Layout>} />
             {/* Statistika */}
             <Route path={"/statistics"} element={<Layout login={login}><Statistics/></Layout>}/>
+            <Route path={"/statisrics/edit/:id"} element={<Layout login={login}><StatisticsEdit/></Layout>} />
             {/* Blog */}
             <Route path={"/blog"} element={<Layout login={login}><Blogs/></Layout>} />
             <Route path={"/newBlog"} element={<Layout login={login}><NewBlog/></Layout>} /> 
