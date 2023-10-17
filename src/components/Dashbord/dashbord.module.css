@@ -19,7 +19,7 @@
 }
 
 .dashbord_card {
-    width: 420px;
+    width: 400px;    
     height: 150px;
     display: flex;
     flex-direction: row;
@@ -44,4 +44,50 @@
 
 .link {
     text-decoration: none;
+}
+
+@media(max-width: 1630px) {
+    .dashbord_card {
+        width: 350px;
+    }
+}
+
+@media(max-width: 1550px) {
+    .dashbord_card {
+        width: 300px;
+    }
+}
+
+@media(max-width: 1290px) {
+    .dashbord_card {
+        width: 400px;
+    }
+}
+
+@media(max-width: 1180px) {
+    .dashbord_card {
+        width: 350px;
+    }
+}
+
+@media(max-width: 1080px) {
+    .dashbord_card {
+        width: 300px;
+    }
+}
+
+@media(max-width: 980px) {
+    .wrapper {
+        justify-content: center;
+    }
+
+    .dashbord_card {
+        width: 450px;
+    }
+}
+
+@media(max-width: 800px) {
+    .dashbord_card {
+        width: 350px;
+    }
 }

@@ -12,7 +12,7 @@ const Layout = ({ children, login }: Props) => {
   if (!login) return <Navigate to="/" />
 
   return (
-    <div  style={{display: "flex" , justifyContent: "space-between" , flexDirection: "column"}}>
+    <div className='wrppaerTopbarAndChildren'>
       <div><TopBar/></div>
       <div className='wrapper_topbar_children'>
         <div>
