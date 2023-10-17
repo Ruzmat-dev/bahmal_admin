@@ -13,6 +13,7 @@ import { TAchievement } from '../../../../types/data';
 import MaterialSymbolsDownload from '../../icons/MaterialSymbolsDownload';
 import { AxiosError } from 'axios';
 import { convertImageToFileURL } from '../../../utils/helpers';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import "./style.css"
 
 
@@ -42,6 +43,8 @@ export default function AchievementsTable() {
         try {
             const res = await getAchievements()
             setAchievements(res?.data)
+            console.log(res?.data);
+
         } catch (error) {
             console.log(error);
         }
@@ -81,7 +84,7 @@ export default function AchievementsTable() {
 
     const openModal = (e: TAchievement) => modals.openConfirmModal({
 
-        
+
 
         title: 'Ozgartirish',
         children: (
@@ -102,7 +105,7 @@ export default function AchievementsTable() {
                             id="picture"
                         />
 
-                        <img    
+                        <img
                             src={imageUrl ? imageUrl : e.image}
                             alt="Preview"
                         />
@@ -126,7 +129,7 @@ export default function AchievementsTable() {
             const formData = new FormData();
             formData.append('image', previewURL!);
             console.log(previewURL);
-            
+
             await axiosPrivate.put(`/achievements/${id}/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -186,13 +189,11 @@ export default function AchievementsTable() {
                                     type="file"
                                     id="picture"
                                 />
-
-                                <img
+                                <LazyLoadImage
                                     className={classes.img}
                                     src={row.image}
-                                    alt="Preview"
+                                    alt="Preview" 
                                 />
-
                             </div>
                         </div>
                     </div>

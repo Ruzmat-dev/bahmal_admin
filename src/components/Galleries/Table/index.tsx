@@ -12,6 +12,7 @@ import MaterialSymbolsDownload from '../../icons/MaterialSymbolsDownload';
 import { AxiosError } from 'axios';
 import { convertImageToFileURL } from '../../../utils/helpers';
 import "./style.css"
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export default function GalleriesTable() {
     const [galleries, setGalleries] = useState<TGalleries[]>()
@@ -155,7 +156,11 @@ export default function GalleriesTable() {
                                 id="picture"
                             />
                             {row.image ? (
-                                <img className={classes.img} src={row.image} alt="Preview" />
+                                <LazyLoadImage
+                                className={classes.img}
+                                src={row.image}
+                                alt="Preview" 
+                            />
                             ) : <></>}
                         </div>
                     </div>
