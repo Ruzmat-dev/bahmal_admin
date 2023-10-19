@@ -45,13 +45,14 @@ export default function LoginForm() {
     const usernameRef = useRef<HTMLInputElement | null>(null)
     const passwordRef = useRef<HTMLInputElement | null>(null)
 
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: yupResolver(schema) })
+    const { register, handleSubmit, formState: { errors }, reset  } = useForm<FormData>({ resolver: yupResolver(schema) })
 
     const onSubmit = async (data: FormData) => {
         setLoading(true)
         try {
             const res = await axiosPrivate.post("/accounts/login/", data)
             toast.success('Movafiqiyatli!')
+            reset()
             localStorage.setItem("access", res.data.access)
             localStorage.setItem("refresh", res.data.refresh)
             window.location.reload()

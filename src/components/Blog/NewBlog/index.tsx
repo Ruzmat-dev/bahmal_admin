@@ -44,6 +44,7 @@ export default function NewBlog() {
     register,
     handleSubmit,
     formState: { errors },
+    reset 
   } = useForm<FormData>({
     resolver: yupResolver(schema)
   });
@@ -61,6 +62,7 @@ export default function NewBlog() {
       });
       toast.success('Movafiqiyatli Qoshildi!')
       setIsSubmitting(false);
+      reset();
     } catch (error) {
       const axiosError = error as AxiosError;
       const myError = axiosError.request?.status ?? 0;

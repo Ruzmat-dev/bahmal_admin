@@ -59,7 +59,7 @@ function Th({ children }: ThProps) {
 export default function CategoriesSee() {
     const [subCategory, setSubCategory] = useState<SubCategory[]>([]);
     const [parentName, setParentName] = useState<string>("")
-    const { register, handleSubmit } = useForm<FormData>({ resolver: yupResolver(schema) })
+    const { register, handleSubmit, reset  } = useForm<FormData>({ resolver: yupResolver(schema) })
     
     const { id } = useParams()
     const navigate = useNavigate();
@@ -119,6 +119,7 @@ export default function CategoriesSee() {
                 }
             });
             toast.success('Movafiqiyatli Qoshildi!')
+            reset()
             fetchSubs()
         } catch (error) {
             const axiosError = error as AxiosError;

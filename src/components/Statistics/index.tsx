@@ -63,6 +63,7 @@ const StatisticItem = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm<FormValues>({
     resolver: yupResolver(schema)
   });
@@ -71,6 +72,7 @@ const StatisticItem = () => {
     try {
       await axiosPrivate.post('/statistics/', new_data)
       toast.success('Movafiqiyatli Qoshildi!')
+      reset()
       fetchStatistics()
       close()
     } catch (error) {

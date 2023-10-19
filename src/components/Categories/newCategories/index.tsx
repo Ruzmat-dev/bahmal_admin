@@ -45,6 +45,7 @@ const schema = yup
     register,
     handleSubmit,
     formState: { errors },
+    reset 
   } = useForm<FormData>({
     resolver: yupResolver(schema)
   });
@@ -53,13 +54,13 @@ const schema = yup
     setIsSubmitting(true);
     const new_data = { ...data, image: selectedFile, title: data.title_en, description:data.description_uz}
     try {
-      const response = await axiosPrivate.post('/categories/', new_data, {
+       await axiosPrivate.post('/categories/', new_data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       toast.success('Movafiqiyatli Qoshildi!')
-      console.log(response);
+      reset()
       setIsSubmitting(false);
     } catch (error) {
       const axiosError = error as AxiosError;
