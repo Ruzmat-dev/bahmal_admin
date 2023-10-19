@@ -95,6 +95,47 @@ interface Product {
   images: string[];
 }
 
+export interface TProductsItem {
+  id: number;
+  created_at: string;
+  product_code: number;
+  title: string;
+  description: string;
+  category: {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    parent: {
+      id: number;
+      title: string;
+      description: string;
+      image: string;
+      parent: null | {
+        id: number;
+        title: string;
+        description: string;
+        image: string;
+        parent: null;
+      };
+    };
+  };
+  avg_rating: null | number;
+  size: {
+    id: number;
+    height: number;
+    width: number;
+    size_type: string;
+  };
+  content: string;
+  design: string;
+  callus: string;
+  made_in: string;
+  new_product: boolean;
+  bestseller: boolean;
+  images: string[];
+}
+
 export interface ProductResponse {
   count: number;
   next: null | string;
